@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/utils/custom_normal_textfield.dart';
+import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
 import 'package:lab_2/utils/validators.dart';
 import '../../widgets/authentication_option.dart';
 

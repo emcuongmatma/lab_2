@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/utils/custom_password_text_field.dart';
+import 'package:lab_2/presentation/widgets/custom_password_text_field.dart';
 import '../../widgets/authentication_option.dart';
 
 class SignUpScreen2 extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../common/colors.dart';
+import '../../common/colors.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
   final String hint;

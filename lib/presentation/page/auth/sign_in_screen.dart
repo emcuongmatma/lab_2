@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
-import 'package:lab_2/utils/custom_elevated_button.dart';
-import 'package:lab_2/utils/custom_normal_textfield.dart';
+import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
+import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
 
 import '../../../utils/validators.dart';
 import '../../widgets/authentication_option.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/utils/validators.dart';
 
-import '../common/colors.dart';
+import '../../common/colors.dart';
 
 class CustomNormalTextField extends StatefulWidget {
   final String hint;
