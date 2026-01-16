@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^7.0.1
   flutter_svg: ^2.2.3
   formz: ^0.8.0
+  dio: ^5.9.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,7 @@ flutter:
      - assets/icons/ic_level_2.svg
      - assets/icons/ic_level_3.svg
      - assets/icons/ic_checked.svg
+     - assets/icons/ic_add.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

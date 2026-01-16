@@ -5,6 +5,7 @@ class AppRouteName {
   static const String WELCOME_ROUTE_NAME = 'welcome';
   static const String PROFILE_SETUP_ROUTE_NAME = 'profile setup';
   static const String PROFILE_FINISH_ROUTE_NAME = 'profile loading';
+  static const String PROFILE_CHOOSE_ROUTE_NAME = 'profile choose';
 
 }
 
@@ -15,5 +16,6 @@ class AppRoutePath {
   static const String WELCOME_ROUTE_PATH = '/welcome';
   static const String PROFILE_SETUP_ROUTE_PATH = '/profile-setup';
   static const String PROFILE_FINISH_ROUTE_PATH = '/profile-loading';
+  static const String PROFILE_CHOOSE_ROUTE_PATH = '/profile-choose';
 }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
-import 'package:lab_2/utils/custom_elevated_button.dart';
 
 class ProfileFinishScreen extends StatefulWidget {
   const ProfileFinishScreen({super.key});
@@ -28,8 +27,9 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   fontSize: 28,
                   color: ColorLight.neutralEel,
                 ),
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 108),
+              const Spacer(),
               Align(
                 alignment: AlignmentGeometry.center,
                 child: Stack(
@@ -71,7 +71,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 132),
+              const Spacer(),
               Row(
                 spacing: 12,
                 children: [
@@ -131,6 +131,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                 ],
               ),
+              const Spacer()
             ],
           ),
         ),

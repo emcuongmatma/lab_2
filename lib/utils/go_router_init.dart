@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lab_2/presentation/page/auth/profile_screen.dart';
 import 'package:lab_2/presentation/page/auth/sign_in_screen.dart';
 import 'package:lab_2/presentation/page/auth/sign_up_screen.dart';
 import 'package:lab_2/presentation/page/auth/sign_up_screen_2.dart';
@@ -10,7 +11,7 @@ import 'package:lab_2/presentation/page/welcome/welcome_screen.dart';
 import '../common/routes.dart';
 
 GoRouter router = GoRouter(
-  initialLocation: AppRoutePath.LOGIN_ROUTE_PATH,
+  initialLocation: AppRoutePath.LOGIN_ROUTE_PATH ,
   routes: <RouteBase>[
     GoRoute(
       name: AppRouteName.LOGIN_ROUTE_NAME,
@@ -55,6 +56,14 @@ GoRouter router = GoRouter(
       path: AppRoutePath.PROFILE_FINISH_ROUTE_PATH,
       builder: (BuildContext context, GoRouterState state) {
         return const ProfileFinishScreen();
+      },
+    ),
+
+    GoRoute(
+      name: AppRouteName.PROFILE_CHOOSE_ROUTE_NAME,
+      path: AppRoutePath.PROFILE_CHOOSE_ROUTE_PATH,
+      builder: (BuildContext context, GoRouterState state) {
+        return const ProfileScreen();
       },
     ),
 

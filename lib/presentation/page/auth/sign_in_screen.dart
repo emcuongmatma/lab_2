@@ -89,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   text: "Đăng nhập",
                   onClick: () {
                     if (_formKey.currentState!.validate()) {
-                      debugPrint("hople");
+                      context.pushNamed(AppRouteName.PROFILE_CHOOSE_ROUTE_NAME);
                     }
                   },
                 ),
