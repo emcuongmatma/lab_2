@@ -1,9 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
+import 'package:lab_2/core/network/dio.dart';
+import 'package:lab_2/data/api/auth_api.dart';
+import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
@@ -23,6 +26,26 @@ class _SignInScreenState extends State<SignInScreen> {
   final _monkeyImage = "assets/images/monkey_image.png";
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final repo = AuthRepository(AuthApi(DioClient.create()));
+
+  Future<void> submit({required VoidCallback onSuccess}) async {
+    try {
+      final result = await repo.login(
+        _usernameController.text,
+        _passwordController.text,
+      );
+      if (result)
+        onSuccess.call();
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Tài khoản hoặc mật khẩu không đúng!")),
+        );
+        _passwordController.clear();
+      }
+    } catch (e) {
+      return;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +112,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   text: "Đăng nhập",
                   onClick: () {
                     if (_formKey.currentState!.validate()) {
-                      context.pushNamed(AppRouteName.PROFILE_CHOOSE_ROUTE_NAME);
+                      submit(
+                        onSuccess: () => context.pushNamed(
+                          AppRouteName.PROFILE_CHOOSE_ROUTE_NAME,
+                        ),
+                      );
                     }
                   },
                 ),
@@ -102,8 +129,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   optionText: "Hoặc đăng nhập với",
                   text1: "Bạn chưa có tài khoản? ",
                   text2: "Đăng ký",
+                  onFacebookAction: () {
+                    showNotifyRowOptionDialog(
+                      context:  context,
+                      message:  "Bạn đã nhập sai mật khẩu quá 5 lần.\nChọn \"Quên mật khẩu\" để khôi phục nhé.",
+                      onAction1: () {
+                        debugPrint("Quen mat khau");
+                      }
+                    );
+                  },
                   onAction: () => context.go(AppRoutePath.SIGNUP_ROUTE_PATH),
                 ),
+                const SizedBox(height: 24),
               ],
             ),
           ),
@@ -130,8 +167,7 @@ class PasswordTextField extends StatefulWidget {
   });
 
   @override
-  State<PasswordTextField> createState() =>
-      _PasswordTextFieldState();
+  State<PasswordTextField> createState() => _PasswordTextFieldState();
 }
 
 class _PasswordTextFieldState extends State<PasswordTextField> {
@@ -183,12 +219,12 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         ),
         suffixIcon: _showHideButton
             ? IconButton(
-          icon: Icon(
-            _isObscured ? Icons.visibility_off : Icons.visibility,
-            color: ColorLight.neutralHare,
-          ),
-          onPressed: () => setState(() => _isObscured = !_isObscured),
-        )
+                icon: Icon(
+                  _isObscured ? Icons.visibility_off : Icons.visibility,
+                  color: ColorLight.neutralHare,
+                ),
+                onPressed: () => setState(() => _isObscured = !_isObscured),
+              )
             : null,
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -205,4 +241,3 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
     );
   }
 }
-

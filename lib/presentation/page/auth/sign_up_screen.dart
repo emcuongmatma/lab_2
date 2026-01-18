@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
+import 'package:lab_2/core/network/dio.dart';
+import 'package:lab_2/data/api/auth_api.dart';
+import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
 import 'package:lab_2/utils/validators.dart';
 import '../../widgets/authentication_option.dart';
@@ -18,7 +22,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _monkeyImage = "assets/images/monkey_image.png";
   final _usernameController = TextEditingController();
   bool _usernameValidated = false;
+  final repo = AuthRepository(AuthApi(DioClient.create()));
 
+  Future<void> checkPhoneNumber({required VoidCallback onSuccess}) async {
+    try {
+      final result = await repo.isAvailable(_usernameController.text);
+
+      if (!result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Số điện thoại này đã được đăng ký!")),
+        );
+      } else {
+        onSuccess();
+      }
+    } catch (e) {
+      return;
+    }
+  }
 
   @override
   void dispose() {
@@ -80,38 +100,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 60),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _usernameValidated
+                  child: CustomElevatedButton(
+                    text: "Tiếp tục",
+                    onClick: _usernameValidated
                         ? () {
-                            context.pushNamed(
-                              AppRouteName.SIGNUP_2_ROUTE_NAME,
-                              pathParameters: {'username': _usernameController.text}
+                            checkPhoneNumber(
+                              onSuccess: () => context.pushNamed(
+                                AppRouteName.SIGNUP_2_ROUTE_NAME,
+                                pathParameters: {
+                                  'username': _usernameController.text,
+                                },
+                              ),
                             );
                           }
                         : null,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      backgroundColor: const Color(0xFF36BFFA),
-                      disabledBackgroundColor: ColorLight.gray300,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                    child: Text(
-                      "Tiếp tục",
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                      ),
-                    ),
+
                   ),
                 ),
                 AuthenticationOption(
                   optionText: "Hoặc đăng ký với",
                   text1: "Tôi đã có tài khoản. ",
                   text2: "Đăng nhập",
-                  onAction: () => context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
+                  onAction: () =>
+                      context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
                 ),
               ],
             ),

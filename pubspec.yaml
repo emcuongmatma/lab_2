@@ -81,6 +81,8 @@ flutter:
      - assets/icons/ic_level_3.svg
      - assets/icons/ic_checked.svg
      - assets/icons/ic_add.svg
+     - assets/images/monkey_failure.png
+     - assets/icons/ic_close.svg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
