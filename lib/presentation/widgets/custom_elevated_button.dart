@@ -5,28 +5,43 @@ import 'package:lab_2/common/colors.dart';
 class CustomElevatedButton extends StatelessWidget {
   final String text;
   final VoidCallback? onClick;
-  const CustomElevatedButton({super.key, required this.text, this.onClick});
+  final Color textColor;
+  final Color backgroundButtonColor;
+  final EdgeInsetsGeometry padding;
+
+  const CustomElevatedButton({
+    super.key,
+    required this.text,
+    this.onClick,
+    this.textColor = Colors.white,
+    this.backgroundButtonColor = ColorLight.blueLight,
+    this.padding = const EdgeInsets.only(bottom: 6),
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onClick,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: onClick == null ? ColorLight.gray300 : ColorLight.blueLightShadow,
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: onClick == null ? ColorLight.neutralSwain :backgroundButtonColor,
             borderRadius: BorderRadius.circular(12),
           ),
-          backgroundColor: const Color(0xFF36BFFA),
-          disabledBackgroundColor: ColorLight.gray300,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-        ),
-        child: Text(
-          text,
-          style: GoogleFonts.nunito(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: GoogleFonts.nunito(
+              fontWeight: FontWeight.w800,
+              fontSize: 20,
+              color: onClick == null ? ColorLight.disableButtonText : textColor,
+            ),
           ),
         ),
       ),

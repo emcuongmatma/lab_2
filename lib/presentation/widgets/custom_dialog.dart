@@ -1,0 +1,274 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
+
+void showNotifyDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  const SizedBox(height: 12),
+                  Text(
+                    "Thông báo",
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 24,
+                      color: ColorLight.neutralEel,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: ColorLight.neutralWolf,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  CustomElevatedButton(
+                    onClick: () {
+                      if (context.canPop()) {
+                        context.pop();
+                      }
+                    },
+                    text: "Tôi đã hiểu",
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
+              right: -8,
+              top: -8,
+              child: GestureDetector(
+                onTap: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  }
+                },
+                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+void showNotifyColumnOptionDialog({
+  required BuildContext context,
+  required String message,
+  String? buttonText1,
+  String? buttonText2,
+  Function? onAction1,
+  Function? onAction2,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  const SizedBox(height: 12),
+                  Text(
+                    "Thông báo",
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 24,
+                      color: ColorLight.neutralEel,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: ColorLight.neutralWolf,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  CustomElevatedButton(
+                    onClick: () {
+                      if (context.canPop()) {
+                        context.pop();
+                      }
+                      onAction1?.call();
+                    },
+                    text: buttonText1 ?? "",
+                  ),
+                  const SizedBox(height: 12),
+                  CustomElevatedButton(
+                    backgroundButtonColor: Colors.white,
+                    textColor: ColorLight.blueLight,
+                    padding: const EdgeInsetsGeometry.only(
+                      top: 1,
+                      left: 1,
+                      right: 1,
+                      bottom: 5,
+                    ),
+                    onClick: () {
+                      if (context.canPop()) {
+                        context.pop();
+                      }
+                      onAction2?.call();
+                    },
+                    text: buttonText2 ?? "",
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
+              right: -8,
+              top: -8,
+              child: GestureDetector(
+                onTap: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  }
+                },
+                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+
+void showNotifyRowOptionDialog({
+  required BuildContext context,
+  required String message,
+  String? buttonText1,
+  String? buttonText2,
+  Function? onAction1,
+  Function? onAction2,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  const SizedBox(height: 12),
+                  Text(
+                    "Thông báo",
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 24,
+                      color: ColorLight.neutralEel,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: ColorLight.neutralWolf,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    spacing: 16,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: CustomElevatedButton(
+                          backgroundButtonColor: Colors.white,
+                          textColor: ColorLight.blueLight,
+                          padding: const EdgeInsetsGeometry.only(
+                            top: 1,
+                            left: 1,
+                            right: 1,
+                            bottom: 5,
+                          ),
+                          onClick: () {
+                            if (context.canPop()) {
+                              context.pop();
+                            }
+                            onAction1?.call();
+                          },
+                          text: buttonText1 ?? "",
+                        ),
+                      ),
+
+                      Flexible(
+                        flex: 1,
+                        child: CustomElevatedButton(
+                          onClick: () {
+                            if (context.canPop()) {
+                              context.pop();
+                            }
+                            onAction2?.call();
+                          },
+                          text: buttonText2 ?? "",
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned(
+              right: -8,
+              top: -8,
+              child: GestureDetector(
+                onTap: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  }
+                },
+                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}

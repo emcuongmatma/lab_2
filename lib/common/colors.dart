@@ -20,7 +20,10 @@ class ColorLight {
   static const Color neutralSwain = Color(0xFFE5E5E5);
   static const Color primaryGreen = Color(0xFF92C73D);
   static const Color blueLight = Color(0xFF36BFFA);
+  static const Color blueLightShadow = Color(0xFF00B2FF);
   static const Color blueAvatar = Color(0xFFDBF1FF);
+  static const Color disableButtonText = Color(0xFFA3A3A3);
+
 }
 
 class ColorDark {

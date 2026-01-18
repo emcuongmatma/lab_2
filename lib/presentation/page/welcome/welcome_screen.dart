@@ -55,12 +55,13 @@ class WelcomeScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsetsGeometry.only(bottom: 36),
-                child: CustomElevatedButton(text: "Tiếp tục", onClick: () {
+              CustomElevatedButton(
+                text: "Tiếp tục",
+                onClick: () {
                   context.goNamed(AppRouteName.PROFILE_SETUP_ROUTE_NAME);
-                }),
+                },
               ),
+              const Spacer(),
             ],
           ),
         ),
