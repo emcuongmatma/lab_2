@@ -7,6 +7,7 @@ import 'package:lab_2/data/repository/auth_repository.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
+import 'package:lab_2/presentation/widgets/loading_overlay.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
@@ -24,11 +25,15 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final repo = di.locator<AuthRepository>();
+  final _repo = di.locator<AuthRepository>();
+  bool _isLoading = false;
 
   Future<void> submit({required VoidCallback onSuccess}) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      final result = await repo.login(
+      final result = await _repo.login(
         _usernameController.text,
         _passwordController.text,
       );
@@ -42,104 +47,124 @@ class _SignInScreenState extends State<SignInScreen> {
       }
     } catch (e) {
       return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back_ios_new, color: ColorLight.gray400),
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: ColorLight.gray400,
+            ),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              spacing: 24,
-              children: [
-                SizedBox(
-                  height: 169,
-                  width: 151,
-                  child: Image.asset(Assets.assetsImagesMonkeyImage),
-                ),
-                Column(
-                  spacing: 12,
-                  children: [
-                    CustomNormalTextField(
-                      hint: "Số điện thoại/Tên đăng nhập",
-                      controller: _usernameController,
-                    ),
-                    PasswordTextField(
-                      controller: _passwordController,
-                      hint: "Mật khẩu",
-                      validator: validatorPassword,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "ID thiết bị: 100600",
-                          style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 14,
-                            color: const Color(0xFFAFAFAF),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          borderRadius: BorderRadius.circular(8),
-                          child: Text(
-                            "Quên mật khẩu?",
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 24,
+                children: [
+                  SizedBox(
+                    height: 169,
+                    width: 151,
+                    child: Image.asset(Assets.imagesMonkeyImage),
+                  ),
+                  Column(
+                    spacing: 12,
+                    children: [
+                      CustomNormalTextField(
+                        hint: "Số điện thoại/Tên đăng nhập",
+                        controller: _usernameController,
+                      ),
+                      PasswordTextField(
+                        controller: _passwordController,
+                        hint: "Mật khẩu",
+                        validator: validatorPassword,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "ID thiết bị: 100600",
                             style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w800,
                               fontSize: 14,
-                              color: const Color(0xFF777777),
+                              color: const Color(0xFFAFAFAF),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                CustomElevatedButton(
-                  text: "Đăng nhập",
-                  onClick: () {
-                    if (_formKey.currentState!.validate()) {
-                      submit(
-                        onSuccess: () => context.pushNamed(
-                          AppRouteName.PROFILE_CHOOSE_ROUTE_NAME,
-                        ),
+                          InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(8),
+                            child: Text(
+                              "Quên mật khẩu?",
+                              style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 14,
+                                color: const Color(0xFF777777),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  CustomElevatedButton(
+                    text: "Đăng nhập",
+                    onClick: () {
+                      if (_formKey.currentState!.validate()) {
+                        submit(
+                          onSuccess: () => context.pushNamed(
+                            AppRouteName.PROFILE_CHOOSE_ROUTE_NAME,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  TextSpanWithAction(
+                    text1: "Nếu bạn có mã kích hoạt, ",
+                    text2: "Nhập tại đây",
+                    onAction: () {},
+                  ),
+                  AuthenticationOption(
+                    optionText: "Hoặc đăng nhập với",
+                    text1: "Bạn chưa có tài khoản? ",
+                    text2: "Đăng ký",
+                    onFacebookAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Facebook thất bại",
                       );
-                    }
-                  },
-                ),
-                TextSpanWithAction(
-                  text1: "Nếu bạn có mã kích hoạt, ",
-                  text2: "Nhập tại đây",
-                  onAction: () {},
-                ),
-                AuthenticationOption(
-                  optionText: "Hoặc đăng nhập với",
-                  text1: "Bạn chưa có tài khoản? ",
-                  text2: "Đăng ký",
-                  onFacebookAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại",);
-                  },
-                  onGoogleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
-                  },
-                  onAppleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
-                  },
-                  onAction: () => context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
-                ),
-                const SizedBox(height: 24),
-              ],
+                    },
+                    onGoogleAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Google thất bại",
+                      );
+                    },
+                    onAppleAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Apple thất bại",
+                      );
+                    },
+                    onAction: () =>
+                        context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
           ),
         ),

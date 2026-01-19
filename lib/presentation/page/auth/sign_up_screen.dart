@@ -10,6 +10,7 @@ import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
+import 'package:lab_2/presentation/widgets/loading_overlay.dart';
 import 'package:lab_2/utils/validators.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -22,11 +23,15 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _usernameController = TextEditingController();
   bool _usernameValidated = false;
-  final repo = di.locator<AuthRepository>();
+  final _repo = di.locator<AuthRepository>();
+  bool _isLoading = false;
 
   Future<void> checkPhoneNumber({required VoidCallback onSuccess}) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      final result = await repo.isAvailable(_usernameController.text);
+      final result = await _repo.isAvailable(_usernameController.text);
 
       if (!result) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -37,6 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } catch (e) {
       return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -48,92 +57,106 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            context.goNamed(AppRouteName.LOGIN_ROUTE_NAME);
-          },
-          icon: const Icon(Icons.arrow_back_ios_new, color: ColorLight.gray400),
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              context.goNamed(AppRouteName.LOGIN_ROUTE_NAME);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: ColorLight.gray400,
+            ),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Form(
-          child: SingleChildScrollView(
-            child: Column(
-              spacing: 24,
-              children: [
-                SizedBox(
-                  height: 169,
-                  width: 151,
-                  child: Image.asset(Assets.assetsImagesMonkeyImage),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 12,
-                  children: [
-                    Text(
-                      "Nhập số điện thoại",
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 22,
-                        color: ColorLight.neutralEel,
-                      ),
-                    ),
-                    CustomNormalTextField(
-                      hint: "Số điện thoại",
-                      controller: _usernameController,
-                      validator: validatorPhone,
-                      onValidate: (isValidated) {
-                        setState(() {
-                          _usernameValidated = isValidated;
-                        });
-                      },
-                      textInputAction: TextInputAction.done,
-                      autoValid: true,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 60),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomElevatedButton(
-                    text: "Tiếp tục",
-                    onClick: _usernameValidated
-                        ? () {
-                            checkPhoneNumber(
-                              onSuccess: () => context.pushNamed(
-                                AppRouteName.SIGNUP_2_ROUTE_NAME,
-                                pathParameters: {
-                                  'username': _usernameController.text,
-                                },
-                              ),
-                            );
-                          }
-                        : null,
-
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Form(
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 24,
+                children: [
+                  SizedBox(
+                    height: 169,
+                    width: 151,
+                    child: Image.asset(Assets.imagesMonkeyImage),
                   ),
-                ),
-                AuthenticationOption(
-                  optionText: "Hoặc đăng ký với",
-                  text1: "Tôi đã có tài khoản. ",
-                  text2: "Đăng nhập",
-                  onFacebookAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại",);
-                  },
-                  onGoogleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
-                  },
-                  onAppleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
-                  },
-                  onAction: () =>
-                      context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
-                ),
-              ],
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12,
+                    children: [
+                      Text(
+                        "Nhập số điện thoại",
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 22,
+                          color: ColorLight.neutralEel,
+                        ),
+                      ),
+                      CustomNormalTextField(
+                        hint: "Số điện thoại",
+                        controller: _usernameController,
+                        validator: validatorPhone,
+                        onValidate: (isValidated) {
+                          setState(() {
+                            _usernameValidated = isValidated;
+                          });
+                        },
+                        textInputAction: TextInputAction.done,
+                        autoValid: true,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 60),
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomElevatedButton(
+                      text: "Tiếp tục",
+                      onClick: _usernameValidated
+                          ? () {
+                              checkPhoneNumber(
+                                onSuccess: () => context.pushNamed(
+                                  AppRouteName.SIGNUP_2_ROUTE_NAME,
+                                  pathParameters: {
+                                    'username': _usernameController.text,
+                                  },
+                                ),
+                              );
+                            }
+                          : null,
+                    ),
+                  ),
+                  AuthenticationOption(
+                    optionText: "Hoặc đăng ký với",
+                    text1: "Tôi đã có tài khoản. ",
+                    text2: "Đăng nhập",
+                    onFacebookAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Facebook thất bại",
+                      );
+                    },
+                    onGoogleAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Google thất bại",
+                      );
+                    },
+                    onAppleAction: () {
+                      showNotifyDialog(
+                        context,
+                        "Đăng nhập bằng Apple thất bại",
+                      );
+                    },
+                    onAction: () =>
+                        context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

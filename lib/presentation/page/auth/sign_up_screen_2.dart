@@ -10,6 +10,7 @@ import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_password_text_field.dart';
+import 'package:lab_2/presentation/widgets/loading_overlay.dart';
 
 class SignUpScreen2 extends StatefulWidget {
   final String? username;
@@ -24,12 +25,16 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
   bool _allValidated = false;
   PasswordInput _password = const PasswordInput.pure();
   PasswordInput _rePassword = const PasswordInput.pure();
-  final repo = di.locator<AuthRepository>();
+  final _repo = di.locator<AuthRepository>();
+  bool _isLoading = false;
 
   Future<void> signUp({required VoidCallback onSuccess}) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       if (widget.username != null) {
-        final result = await repo.signUp(
+        final result = await _repo.signUp(
           widget.username ?? "",
           _password.value,
         );
@@ -43,121 +48,128 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
       }
     } catch (e) {
       return;
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            }
-          },
-          icon: const Icon(Icons.arrow_back_ios_new, color: ColorLight.gray400),
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              }
+            },
+            icon: const Icon(Icons.arrow_back_ios_new, color: ColorLight.gray400),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 24,
-            children: [
-              SizedBox(
-                height: 169,
-                width: 151,
-                child: Image.asset(Assets.assetsImagesMonkeyImage),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12,
-                children: [
-                  Text(
-                    "Tạo mật khẩu",
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 22,
-                      color: ColorLight.neutralEel,
-                    ),
-                  ),
-                  CustomPasswordTextField(
-                    hint: "Nhập mật khẩu",
-                    isValid: _password.isValid,
-                    isPure: _password.isPure,
-                    errorText: _passwordStatusText,
-                    validText: "Mật khẩu hợp lệ",
-                    onChanged: (val) {
-                      setState(() {
-                        _password = PasswordInput.dirty(val);
-                        _allValidated =
-                            _password.isValid &&
-                            _rePassword.isValid &&
-                            _password.value == _rePassword.value;
-                      });
-                    },
-                  ),
-
-                  CustomPasswordTextField(
-                    hint: "Nhập lại mật khẩu",
-                    isValid:
-                        _password.value == _rePassword.value &&
-                        _password.value.isNotEmpty,
-                    isPure: _rePassword.isPure,
-                    errorText: _password.value != _rePassword.value
-                        ? "Mật khẩu không trùng khớp"
-                        : null,
-                    validText: _password.value != _rePassword.value
-                        ? null
-                        : "Mật khẩu trùng khớp",
-                    onChanged: (val) {
-                      setState(() {
-                        _rePassword = PasswordInput.dirty(val);
-                        _allValidated =
-                            _password.isValid &&
-                            _rePassword.isValid &&
-                            _password.value == _rePassword.value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                width: double.infinity,
-                child: CustomElevatedButton(
-                  text: "Tiếp tục",
-                  onClick: _allValidated
-                      ? () {
-                          signUp(
-                            onSuccess: () => context.goNamed(
-                              AppRouteName.WELCOME_ROUTE_NAME,
-                            ),
-                          );
-                        }
-                      : null,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: SingleChildScrollView(
+            child: Column(
+              spacing: 24,
+              children: [
+                SizedBox(
+                  height: 169,
+                  width: 151,
+                  child: Image.asset(Assets.imagesMonkeyImage),
                 ),
-              ),
-              AuthenticationOption(
-                optionText: "Hoặc đăng ký với",
-                text1: "Tôi đã có tài khoản. ",
-                text2: "Đăng nhập",
-                onFacebookAction: () {
-                  showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại",);
-                },
-                onGoogleAction: () {
-                  showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
-                },
-                onAppleAction: () {
-                  showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
-                },
-                onAction: () => context.go(AppRoutePath.LOGIN_ROUTE_PATH),
-              ),
-              const SizedBox(height: 16),
-            ],
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 12,
+                  children: [
+                    Text(
+                      "Tạo mật khẩu",
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.nunito(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                        color: ColorLight.neutralEel,
+                      ),
+                    ),
+                    CustomPasswordTextField(
+                      hint: "Nhập mật khẩu",
+                      isValid: _password.isValid,
+                      isPure: _password.isPure,
+                      errorText: _passwordStatusText,
+                      validText: "Mật khẩu hợp lệ",
+                      onChanged: (val) {
+                        setState(() {
+                          _password = PasswordInput.dirty(val);
+                          _allValidated =
+                              _password.isValid &&
+                              _rePassword.isValid &&
+                              _password.value == _rePassword.value;
+                        });
+                      },
+                    ),
+
+                    CustomPasswordTextField(
+                      hint: "Nhập lại mật khẩu",
+                      isValid:
+                          _password.value == _rePassword.value &&
+                          _password.value.isNotEmpty,
+                      isPure: _rePassword.isPure,
+                      errorText: _password.value != _rePassword.value
+                          ? "Mật khẩu không trùng khớp"
+                          : null,
+                      validText: _password.value != _rePassword.value
+                          ? null
+                          : "Mật khẩu trùng khớp",
+                      onChanged: (val) {
+                        setState(() {
+                          _rePassword = PasswordInput.dirty(val);
+                          _allValidated =
+                              _password.isValid &&
+                              _rePassword.isValid &&
+                              _password.value == _rePassword.value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomElevatedButton(
+                    text: "Tiếp tục",
+                    onClick: _allValidated
+                        ? () {
+                            signUp(
+                              onSuccess: () => context.goNamed(
+                                AppRouteName.WELCOME_ROUTE_NAME,
+                              ),
+                            );
+                          }
+                        : null,
+                  ),
+                ),
+                AuthenticationOption(
+                  optionText: "Hoặc đăng ký với",
+                  text1: "Tôi đã có tài khoản. ",
+                  text2: "Đăng nhập",
+                  onFacebookAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại");
+                  },
+                  onGoogleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
+                  },
+                  onAppleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
+                  },
+                  onAction: () => context.go(AppRoutePath.LOGIN_ROUTE_PATH),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
