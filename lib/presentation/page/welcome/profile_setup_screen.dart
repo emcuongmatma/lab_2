@@ -6,7 +6,9 @@ import 'package:lab_2/presentation/page/welcome/step/level_step_widget.dart';
 import 'package:lab_2/presentation/page/welcome/step/name_step_widget.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
-  const ProfileSetupScreen({super.key});
+  final String? username;
+
+  const ProfileSetupScreen({super.key, this.username});
 
   @override
   State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
@@ -79,8 +81,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     LevelStep(
                       onFinish: (level) {
                         _englishLevel = level;
-                        final profile = {"name : $_name, birth: $_birthYear, level: $_englishLevel"};
-                        context.goNamed(AppRouteName.PROFILE_FINISH_ROUTE_NAME);
+                        final profile = {
+                          "id": widget.username,
+                          "nickName": _name,
+                          "birthYear": _birthYear,
+                          "level": _englishLevel,
+                        };
+                        context.goNamed(AppRouteName.PROFILE_FINISH_ROUTE_NAME,extra: profile);
                       },
                     ),
                   ],
@@ -93,5 +100,3 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 }
-
-

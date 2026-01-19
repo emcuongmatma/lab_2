@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:lab_2/common/api.dart';
+import 'package:lab_2/core/network/api_exception.dart';
 import 'package:lab_2/data/model/user_profile.dart';
 
 class AuthApi {
@@ -8,21 +8,43 @@ class AuthApi {
 
   AuthApi(this.dio);
 
-  Future<UserProfile?> login(String id) async {
-    final response = await dio.get("${API.AUTH}/$id");
-    final data = response.data;
-    return data != null ? UserProfile.fromJson(data) : null;
+  Future<Map<String, dynamic>> login(String id) async {
+    try {
+      final response = await dio.get("${API.AUTH}/$id");
+      return response.data;
+    } on DioException catch (e) {
+      throw mapDioError(e);
+    }
   }
 
-  Future<Response<dynamic>> isAvailable(String id) async {
-    final response = await dio.get("${API.AUTH}/$id");
-    return response;
+  Future<Map<String, dynamic>?> checkIdExists(String id) async {
+    try {
+      final response = await dio.get("${API.AUTH}/$id");
+      return response.data;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return null;
+      }
+      throw mapDioError(e);
+    }
   }
 
-  Future<bool> signUp(UserProfile profile) async {
-    final response = await dio.post(API.AUTH,data: profile.toJson());
-    final data = response.data;
-    debugPrint("hehehe: $data");
-    return data != null;
+  Future<Map<String, dynamic>> signUp(UserProfile profile) async {
+    try {
+      final response = await dio.post(API.AUTH,data: profile.toJson());
+      return response.data;
+    } on DioException catch (e) {
+      throw mapDioError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> updateProfile(Map<String,Object?> userInfo) async {
+    try {
+      final id = userInfo["id"];
+      final response = await dio.put("${API.AUTH}/$id",data: userInfo);
+      return response.data;
+    } on DioException catch (e) {
+      throw mapDioError(e);
+    }
   }
 }

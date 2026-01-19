@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
   PhoneInput _usernameInput = const PhoneInput.pure();
   PasswordInput _passwordInput = const PasswordInput.pure();
   bool _isLoading = false;
-
+  int _failedAttemptsCount = 0;
 
   @override
   void dispose() {
@@ -63,19 +63,24 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  Future<void> submit({required VoidCallback onSuccess}) async {
+  Future<void> submit({
+    required VoidCallback onSuccess,
+    required VoidCallback showForgotPasswordDialog,
+  }) async {
     setState(() {
       _isLoading = true;
     });
     try {
       final result = await _repo.login(_username, _password);
-      if (result) {
+      if (result.success) {
         onSuccess.call();
       } else {
         setState(() {
           _usernameInput = PhoneInput.dirty(_username, true);
           _passwordInput = const PasswordInput.pure();
           _controller.clear();
+          _failedAttemptsCount++;
+          if (_failedAttemptsCount == 5) showForgotPasswordDialog();
         });
       }
     } catch (e) {
@@ -179,6 +184,20 @@ class _SignInScreenState extends State<SignInScreen> {
                         onSuccess: () => context.pushNamed(
                           AppRouteName.PROFILE_CHOOSE_ROUTE_NAME,
                         ),
+                        showForgotPasswordDialog: () {
+                          showNotifyColumnOptionDialog(
+                            context: context,
+                            message:
+                                "Bạn đã nhập sai mật khẩu quá 5 lần.\nChọn \"Quên mật khẩu\" để khôi phục nhé.",
+                            buttonText1: "Quên mật khẩu",
+                            buttonText2: "Thử lại",
+                            onAction2:() {
+                              setState(() {
+                                _failedAttemptsCount = 0;
+                              });
+                            }
+                          );
+                        },
                       );
                     }
                   },
@@ -199,19 +218,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     );
                   },
                   onGoogleAction: () {
-                    showNotifyDialog(
-                      context,
-                      "Đăng nhập bằng Google thất bại",
-                    );
+                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
                   },
                   onAppleAction: () {
-                    showNotifyDialog(
-                      context,
-                      "Đăng nhập bằng Apple thất bại",
-                    );
+                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
                   },
-                  onAction: () =>
-                      context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
+                  onAction: () => context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
                 ),
                 const SizedBox(height: 24),
               ],

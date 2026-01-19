@@ -1,42 +1,73 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:lab_2/core/network/api_exception.dart';
+import 'package:lab_2/core/network/api_response.dart';
 import 'package:lab_2/data/api/auth_api.dart';
 import 'package:lab_2/data/model/user_profile.dart';
 
+enum AuthenticationStatus { unknown, authenticated, unauthenticated }
+
 class AuthRepository {
-  final AuthApi api;
+  final AuthApi _api;
 
-  AuthRepository(this.api);
+  AuthRepository(this._api);
 
-  Future<bool> login(String id, String password) async {
+  final _controller = StreamController<AuthenticationStatus>();
+
+  Stream<AuthenticationStatus> get status async* {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    yield AuthenticationStatus.unauthenticated;
+    yield* _controller.stream;
+  }
+
+  Future<ApiResponse<UserProfile>> login(String id, String password) async {
     try {
-      final result = await api.login(id);
-      if(result == null) throw "Tài khoản không tồn tại";
-      if (password != result.password) throw "Mật khẩu không đúng";
-      return true;
-    } catch(e) {
-      debugPrint("hehehe: $e");
-      return false;
+      final result = await _api.login(id);
+      debugPrint("hehehe : ${result.toString()}");
+      if (result['password'] != password) {
+        return ApiResponse.failure("Mật khẩu không đúng");
+      }
+      _controller.add(AuthenticationStatus.authenticated);
+      return ApiResponse.success(UserProfile.fromJson(result));
+    } on ApiException catch (e) {
+      return ApiResponse.failure(e.message, statusCode: e.statusCode);
     }
   }
 
-  Future<bool> isAvailable(String id) async {
+  Future<ApiResponse<bool>> isAvailable(String id) async {
     try {
-      await api.isAvailable(id);
-      return false;
-    } catch(e) {
-      debugPrint("hehehe: $e");
-      return true;
+      final result = await _api.checkIdExists(id);
+      return ApiResponse.success(result == null);
+    } catch (e) {
+      return ApiResponse.failure(e.toString());
     }
   }
 
-  Future<bool> signUp(String id, String password) async {
+  Future<ApiResponse<UserProfile>> signUp(String id, String password) async {
     try {
       final user = UserProfile(id: id, name: id, password: password);
-      final result = await api.signUp(user);
-      return result;
-    } catch(e) {
-      debugPrint("hehehe: $e");
-      return false;
+      final result = await _api.signUp(user);
+      return ApiResponse.success(UserProfile.fromJson(result));
+    } on ApiException catch (e) {
+      return ApiResponse.failure(e.message, statusCode: e.statusCode);
     }
   }
+
+  Future<ApiResponse<UserProfile>> updateProfile(
+    Map<String, Object?> userInfo,
+  ) async {
+    try {
+      final result = await _api.updateProfile(userInfo);
+      return ApiResponse.success(UserProfile.fromJson(result));
+    } on ApiException catch (e) {
+      return ApiResponse.failure(e.message, statusCode: e.statusCode);
+    }
+  }
+
+  void logOut() {
+    _controller.add(AuthenticationStatus.unauthenticated);
+  }
+
+  void dispose() => _controller.close();
 }

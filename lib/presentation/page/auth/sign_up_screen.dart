@@ -25,18 +25,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _repo = di.locator<AuthRepository>();
   bool _isLoading = false;
 
-  Future<void> checkPhoneNumber({required VoidCallback onSuccess}) async {
+  Future<void> checkPhoneNumber({
+    required VoidCallback onSuccess,
+    required VoidCallback showPhoneUsedDialog,
+  }) async {
     setState(() {
       _isLoading = true;
     });
     try {
       final result = await _repo.isAvailable(_usernameInput.value);
-      if (!result) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Số điện thoại này đã được đăng ký!")),
-        );
-      } else {
+      if (result.data == true) {
         onSuccess();
+      } else {
+        showPhoneUsedDialog();
       }
     } catch (e) {
       return;
@@ -118,6 +119,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     'username': _usernameInput.value,
                                   },
                                 ),
+                                showPhoneUsedDialog: () {
+                                  showNotifyRowOptionDialog(
+                                    context: context,
+                                    message:
+                                        "Số điện thoại này đã được đăng ký với Monkey, ba mẹ hãy đăng nhập nhé.",
+                                    buttonText1: "Huỷ",
+                                    buttonText2: "Đăng nhập",
+                                    onAction2: () => context.pushNamed(
+                                      AppRouteName.LOGIN_ROUTE_NAME,
+                                    ),
+                                  );
+                                },
                               );
                             }
                           : null,
@@ -145,8 +158,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         "Đăng nhập bằng Apple thất bại",
                       );
                     },
-                    onAction: () =>
-                        context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
+                    onAction: () {
+                      if (_usernameInput.value.isNotEmpty) {
+                        showNotifyRowOptionDialog(
+                          context: context,
+                          message:
+                              "Ba mẹ sẽ mất đi hồ sơ học ${_usernameInput.value}, ba mẹ có muốn đăng nhập không?",
+                          buttonText1: "Huỷ",
+                          buttonText2: "Đăng nhập",
+                          onAction2: () =>
+                              context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
+                        );
+                      } else {
+                        context.goNamed(AppRouteName.LOGIN_ROUTE_NAME);
+                      }
+                    },
                   ),
                 ],
               ),

@@ -1,15 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/injection.dart' as di;
 
 class ProfileFinishScreen extends StatefulWidget {
-  const ProfileFinishScreen({super.key});
+  final Map<String, Object?>? userInfo;
+
+  const ProfileFinishScreen({super.key, this.userInfo});
 
   @override
   State<ProfileFinishScreen> createState() => _ProfileFinishScreenState();
 }
 
 class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
+  final _repo = di.locator<AuthRepository>();
+
+  Future<void> _updateUserData({
+    required VoidCallback onSuccess,
+    required VoidCallback onFail,
+  }) async {
+    try {
+      if (widget.userInfo != null) {
+        final result = await _repo.updateProfile(widget.userInfo ?? {});
+        if (result.success) {
+          onSuccess();
+        } else {
+          onFail();
+        }
+      }
+    } catch (e) {
+      return;
+    } finally {}
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    _updateUserData(onSuccess: () {  }, onFail: () {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +162,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                 ],
               ),
-              const Spacer()
+              const Spacer(),
             ],
           ),
         ),

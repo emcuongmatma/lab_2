@@ -39,7 +39,8 @@ GoRouter router = GoRouter(
       name: AppRouteName.WELCOME_ROUTE_NAME,
       path: AppRoutePath.WELCOME_ROUTE_PATH,
       builder: (BuildContext context, GoRouterState state) {
-        return const WelcomeScreen();
+        final username = state.pathParameters['username'];
+        return WelcomeScreen(username: username);
       },
     ),
 
@@ -47,7 +48,8 @@ GoRouter router = GoRouter(
       name: AppRouteName.PROFILE_SETUP_ROUTE_NAME,
       path: AppRoutePath.PROFILE_SETUP_ROUTE_PATH,
       builder: (BuildContext context, GoRouterState state) {
-        return const ProfileSetupScreen();
+        final username = state.pathParameters['username'];
+        return ProfileSetupScreen(username: username);
       },
     ),
 
@@ -55,7 +57,8 @@ GoRouter router = GoRouter(
       name: AppRouteName.PROFILE_FINISH_ROUTE_NAME,
       path: AppRoutePath.PROFILE_FINISH_ROUTE_PATH,
       builder: (BuildContext context, GoRouterState state) {
-        return const ProfileFinishScreen();
+        final userInfo = state.extra as Map<String, Object?>;
+        return ProfileFinishScreen(userInfo:  userInfo);
       },
     ),
 

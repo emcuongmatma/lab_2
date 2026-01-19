@@ -29,7 +29,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
   final _repo = di.locator<AuthRepository>();
   bool _isLoading = false;
 
-  Future<void> signUp({required VoidCallback onSuccess}) async {
+  Future<void> signUp({required VoidCallback onSuccess, required VoidCallback onFail}) async {
     setState(() {
       _isLoading = true;
     });
@@ -39,12 +39,10 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
           widget.username ?? "",
           _password.value,
         );
-        if (result) {
+        if (result.success) {
           onSuccess();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Không thể nhận dạng số điện thoại")),
-          );
+          onFail();
         }
       }
     } catch (e) {
@@ -152,7 +150,15 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                             signUp(
                               onSuccess: () => context.goNamed(
                                 AppRouteName.WELCOME_ROUTE_NAME,
+                                pathParameters: {
+                                  'username': widget.username ?? "",
+                                }
                               ),
+                              onFail: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Không thể nhận dạng số điện thoại")),
+                                );
+                              }
                             );
                           }
                         : null,
