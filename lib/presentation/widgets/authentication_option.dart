@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
 
 class AuthenticationOption extends StatelessWidget {
@@ -53,17 +54,17 @@ class AuthenticationOption extends StatelessWidget {
           spacing: 12,
           children: [
             _socialButton(
-              icon: "assets/icons/ic_facebook.svg",
+              icon: Assets.iconsIcFacebook,
               color: const Color(0xFF1877F2),
               onTap: () => onFacebookAction?.call(),
             ),
             _socialButton(
-              icon: "assets/icons/ic_google.svg",
+              icon: Assets.iconsIcGoogle,
               color: Colors.white,
               onTap: () => onGoogleAction?.call(),
             ),
             _socialButton(
-              icon: "assets/icons/ic_apple.svg",
+              icon: Assets.iconsIcApple,
               color: Colors.black,
               onTap: () => onAppleAction?.call(),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
 import 'package:lab_2/utils/validators.dart';
@@ -44,7 +45,7 @@ class _NameStepState extends State<NameStep> {
             SizedBox(
               width: 148,
               height: 168,
-              child: Image.asset("assets/images/monkey_fill_info_image.png"),
+              child: Image.asset(Assets.imagesMonkeyFillInfoImage),
             ),
             Text(
               "Tên của bé là?",

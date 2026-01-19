@@ -3,11 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 
 void showNotifyDialog(BuildContext context, String message) {
   showDialog(
     context: context,
+    fullscreenDialog: true,
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
@@ -21,7 +23,7 @@ void showNotifyDialog(BuildContext context, String message) {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
                     "Thông báo",
@@ -63,7 +65,11 @@ void showNotifyDialog(BuildContext context, String message) {
                     context.pop();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+                child: SvgPicture.asset(
+                  Assets.iconsIcClose,
+                  width: 48,
+                  height: 48,
+                ),
               ),
             ),
           ],
@@ -96,7 +102,7 @@ void showNotifyColumnOptionDialog({
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
                     "Thông báo",
@@ -157,7 +163,11 @@ void showNotifyColumnOptionDialog({
                     context.pop();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+                child: SvgPicture.asset(
+                  Assets.iconsIcClose,
+                  width: 48,
+                  height: 48,
+                ),
               ),
             ),
           ],
@@ -166,7 +176,6 @@ void showNotifyColumnOptionDialog({
     },
   );
 }
-
 
 void showNotifyRowOptionDialog({
   required BuildContext context,
@@ -191,7 +200,7 @@ void showNotifyRowOptionDialog({
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset('assets/images/monkey_failure.png', height: 120),
+                  Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
                     "Thông báo",
@@ -263,7 +272,11 @@ void showNotifyRowOptionDialog({
                     context.pop();
                   }
                 },
-                child: SvgPicture.asset("assets/icons/ic_close.svg"),
+                child: SvgPicture.asset(
+                  Assets.iconsIcClose,
+                  width: 48,
+                  height: 48,
+                ),
               ),
             ),
           ],

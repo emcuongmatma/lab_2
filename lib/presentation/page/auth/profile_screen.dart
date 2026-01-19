@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -198,7 +199,7 @@ class AddProfileItem extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(30),
-                child: SvgPicture.asset("assets/icons/ic_add.svg"),
+                child: SvgPicture.asset(Assets.iconsIcAdd),
               ),
             ),
           ),

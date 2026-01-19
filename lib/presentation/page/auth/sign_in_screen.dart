@@ -3,16 +3,15 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/core/network/dio.dart';
-import 'package:lab_2/data/api/auth_api.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/generated/assets.dart';
+import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
-
-import '../../../utils/validators.dart';
-import '../../widgets/authentication_option.dart';
+import 'package:lab_2/utils/validators.dart';
+import 'package:lab_2/injection.dart' as di;
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -23,10 +22,9 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _monkeyImage = "assets/images/monkey_image.png";
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final repo = AuthRepository(AuthApi(DioClient.create()));
+  final repo = di.locator<AuthRepository>();
 
   Future<void> submit({required VoidCallback onSuccess}) async {
     try {
@@ -34,9 +32,9 @@ class _SignInScreenState extends State<SignInScreen> {
         _usernameController.text,
         _passwordController.text,
       );
-      if (result)
+      if (result) {
         onSuccess.call();
-      else {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Tài khoản hoặc mật khẩu không đúng!")),
         );
@@ -67,7 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(
                   height: 169,
                   width: 151,
-                  child: Image.asset(_monkeyImage),
+                  child: Image.asset(Assets.assetsImagesMonkeyImage),
                 ),
                 Column(
                   spacing: 12,
@@ -130,15 +128,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   text1: "Bạn chưa có tài khoản? ",
                   text2: "Đăng ký",
                   onFacebookAction: () {
-                    showNotifyRowOptionDialog(
-                      context:  context,
-                      message:  "Bạn đã nhập sai mật khẩu quá 5 lần.\nChọn \"Quên mật khẩu\" để khôi phục nhé.",
-                      onAction1: () {
-                        debugPrint("Quen mat khau");
-                      }
-                    );
+                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại",);
                   },
-                  onAction: () => context.go(AppRoutePath.SIGNUP_ROUTE_PATH),
+                  onGoogleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
+                  },
+                  onAppleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
+                  },
+                  onAction: () => context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
                 ),
                 const SizedBox(height: 24),
               ],

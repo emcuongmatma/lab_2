@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:lab_2/common/api.dart';
 
 class DioClient {
   static Dio create() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: 'https://6969ace53a2b2151f845f24d.mockapi.io/api/v1',
+        baseUrl: API.BASE_URL,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         headers: {
@@ -16,6 +17,7 @@ class DioClient {
     dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
+        responseHeader: false,
         responseBody: true,
       ),
     );

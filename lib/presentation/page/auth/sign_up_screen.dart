@@ -3,13 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/core/network/dio.dart';
-import 'package:lab_2/data/api/auth_api.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/generated/assets.dart';
+import 'package:lab_2/injection.dart' as di;
+import 'package:lab_2/presentation/widgets/authentication_option.dart';
+import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
 import 'package:lab_2/utils/validators.dart';
-import '../../widgets/authentication_option.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -19,10 +20,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final _monkeyImage = "assets/images/monkey_image.png";
   final _usernameController = TextEditingController();
   bool _usernameValidated = false;
-  final repo = AuthRepository(AuthApi(DioClient.create()));
+  final repo = di.locator<AuthRepository>();
 
   Future<void> checkPhoneNumber({required VoidCallback onSuccess}) async {
     try {
@@ -67,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   height: 169,
                   width: 151,
-                  child: Image.asset(_monkeyImage),
+                  child: Image.asset(Assets.assetsImagesMonkeyImage),
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.max,
@@ -121,6 +121,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   optionText: "Hoặc đăng ký với",
                   text1: "Tôi đã có tài khoản. ",
                   text2: "Đăng nhập",
+                  onFacebookAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại",);
+                  },
+                  onGoogleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
+                  },
+                  onAppleAction: () {
+                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
+                  },
                   onAction: () =>
                       context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
                 ),

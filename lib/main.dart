@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/utils/go_router_init.dart';
-
+import 'package:lab_2/injection.dart' as di;
 void main() {
+  di.init();
   runApp(const MyApp());
 }
 

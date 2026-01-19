@@ -3,11 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final backgroundImage = "assets/images/register_background_image.png";
-  final fireworkImage = "assets/images/firework_image.png";
 
   const WelcomeScreen({super.key});
 
@@ -37,12 +36,12 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   Positioned(
                     right: 6,
-                    child: Image.asset(fireworkImage, width: 102, height: 102),
+                    child: Image.asset(Assets.imagesFireworkImage, width: 102, height: 102),
                   ),
                   Positioned(
                     top: 40,
                     left: 6,
-                    child: Image.asset(fireworkImage, width: 102, height: 102),
+                    child: Image.asset(Assets.imagesFireworkImage, width: 102, height: 102),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -50,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                       right: 36,
                       top: 120,
                     ),
-                    child: Image.asset(backgroundImage),
+                    child: Image.asset(Assets.imagesRegisterBackgroundImage),
                   ),
                 ],
               ),

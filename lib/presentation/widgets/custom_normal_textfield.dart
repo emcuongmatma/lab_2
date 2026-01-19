@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/utils/validators.dart';
-
-import '../../common/colors.dart';
-
 class CustomNormalTextField extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
@@ -56,7 +55,7 @@ class _CustomNormalTextFieldState extends State<CustomNormalTextField> {
             ? IconButton(
                 padding: const EdgeInsets.only(right: 24),
                 onPressed: () {},
-                icon: SvgPicture.asset("assets/icons/ic_validated.svg"),
+                icon: SvgPicture.asset(Assets.iconsIcValidated),
               )
             : null,
         border: const OutlineInputBorder(

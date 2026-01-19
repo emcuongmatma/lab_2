@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
 
 class BirthStep extends StatefulWidget {
@@ -29,7 +30,6 @@ class _BirthStepState extends State<BirthStep> {
     2011,
     2010,
   ];
-  final imageUrl = "assets/images/monkey_fill_info_image.png";
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _BirthStepState extends State<BirthStep> {
         Row(
           spacing: 10,
           children: [
-            SizedBox(width: 148, height: 168, child: Image.asset(imageUrl)),
+            SizedBox(width: 148, height: 168, child: Image.asset(Assets.imagesMonkeyFillInfoImage)),
             Flexible(
               child: Text(
                 "${widget.username} sinh vào năm nào?",
