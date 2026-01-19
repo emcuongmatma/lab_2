@@ -6,12 +6,12 @@ import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/injection.dart' as di;
+import 'package:lab_2/presentation/page/auth/model/username_input.dart';
 import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
-import 'package:lab_2/presentation/widgets/custom_normal_textfield.dart';
+import 'package:lab_2/presentation/widgets/custom_phone_text_field.dart';
 import 'package:lab_2/presentation/widgets/loading_overlay.dart';
-import 'package:lab_2/utils/validators.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,8 +21,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final _usernameController = TextEditingController();
-  bool _usernameValidated = false;
+  PhoneInput _usernameInput = const PhoneInput.pure();
   final _repo = di.locator<AuthRepository>();
   bool _isLoading = false;
 
@@ -31,8 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
     try {
-      final result = await _repo.isAvailable(_usernameController.text);
-
+      final result = await _repo.isAvailable(_usernameInput.value);
       if (!result) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Số điện thoại này đã được đăng ký!")),
@@ -47,12 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _isLoading = false;
       });
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _usernameController.dispose();
   }
 
   @override
@@ -97,17 +89,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: ColorLight.neutralEel,
                         ),
                       ),
-                      CustomNormalTextField(
+                      CustomPhoneTextField(
                         hint: "Số điện thoại",
-                        controller: _usernameController,
-                        validator: validatorPhone,
-                        onValidate: (isValidated) {
+                        isValid: _usernameInput.isValid,
+                        isPure: _usernameInput.isPure,
+                        textInputAction: TextInputAction.done,
+                        validText: "Số điện thoại khả dụng",
+                        validBorderColor: ColorLight.primaryGreen,
+                        onChanged: (val) {
                           setState(() {
-                            _usernameValidated = isValidated;
+                            _usernameInput = PhoneInput.dirty(val);
                           });
                         },
-                        textInputAction: TextInputAction.done,
-                        autoValid: true,
                       ),
                     ],
                   ),
@@ -116,13 +109,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: double.infinity,
                     child: CustomElevatedButton(
                       text: "Tiếp tục",
-                      onClick: _usernameValidated
+                      onClick: _usernameInput.isValid
                           ? () {
                               checkPhoneNumber(
                                 onSuccess: () => context.pushNamed(
                                   AppRouteName.SIGNUP_2_ROUTE_NAME,
                                   pathParameters: {
-                                    'username': _usernameController.text,
+                                    'username': _usernameInput.value,
                                   },
                                 ),
                               );

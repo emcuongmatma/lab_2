@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/utils/validators.dart';
+
 class CustomNormalTextField extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
@@ -20,7 +21,8 @@ class CustomNormalTextField extends StatefulWidget {
     this.onValidate,
     this.autoValid,
     this.textInputAction,
-    this.validator, this.focusNode,
+    this.validator,
+    this.focusNode,
   });
 
   @override
@@ -80,7 +82,8 @@ class _CustomNormalTextFieldState extends State<CustomNormalTextField> {
       widget.controller.addListener(() {
         if (mounted) {
           setState(() {
-            isValidated = widget.validator?.call(widget.controller.text) == null ;
+            isValidated =
+                widget.validator?.call(widget.controller.text) == null;
             borderColor = isValidated
                 ? ColorLight.primaryGreen
                 : ColorLight.neutralHare;

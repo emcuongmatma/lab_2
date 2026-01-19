@@ -6,6 +6,7 @@ import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/injection.dart' as di;
+import 'package:lab_2/presentation/page/auth/model/password_input.dart';
 import 'package:lab_2/presentation/widgets/authentication_option.dart';
 import 'package:lab_2/presentation/widgets/custom_dialog.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
@@ -67,7 +68,10 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                 context.pop();
               }
             },
-            icon: const Icon(Icons.arrow_back_ios_new, color: ColorLight.gray400),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: ColorLight.gray400,
+            ),
           ),
         ),
         body: Padding(
@@ -101,6 +105,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                       isPure: _password.isPure,
                       errorText: _passwordStatusText,
                       validText: "Mật khẩu hợp lệ",
+                      validBorderColor: ColorLight.primaryGreen,
                       onChanged: (val) {
                         setState(() {
                           _password = PasswordInput.dirty(val);
@@ -114,6 +119,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
 
                     CustomPasswordTextField(
                       hint: "Nhập lại mật khẩu",
+                      validBorderColor: ColorLight.primaryGreen,
                       isValid:
                           _password.value == _rePassword.value &&
                           _password.value.isNotEmpty,
@@ -157,7 +163,10 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                   text1: "Tôi đã có tài khoản. ",
                   text2: "Đăng nhập",
                   onFacebookAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Facebook thất bại");
+                    showNotifyDialog(
+                      context,
+                      "Đăng nhập bằng Facebook thất bại",
+                    );
                   },
                   onGoogleAction: () {
                     showNotifyDialog(context, "Đăng nhập bằng Google thất bại");

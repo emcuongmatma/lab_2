@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:formz/formz.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/generated/assets.dart';
 
-class CustomPasswordTextField extends StatefulWidget {
+class CustomPhoneTextField extends StatelessWidget {
   final String hint;
+  final TextEditingController? controller;
   final bool isValid;
   final bool isPure;
-  final TextEditingController? controller;
-  final Function(String)? onChanged;
+  final TextInputAction? textInputAction;
+  final FocusNode? focusNode;
   final String? errorText;
   final String? validText;
+  final Function(String)? onChanged;
   final Color validBorderColor;
-  const CustomPasswordTextField({
+
+  const CustomPhoneTextField({
     super.key,
+    this.controller,
     required this.hint,
-    this.onChanged,
+    this.textInputAction,
+    this.focusNode,
     required this.isValid,
     required this.isPure,
     this.errorText,
     this.validText,
-    this.controller,
+    this.onChanged,
     this.validBorderColor = ColorLight.neutralHare
   });
 
-  @override
-  State<CustomPasswordTextField> createState() =>
-      _CustomPasswordTextFieldState();
-}
-
-class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
-  bool _isObscured = true;
-
   Color get _mainColor {
-    if (widget.isPure) return ColorLight.neutralHare;
-    return widget.isValid ? widget.validBorderColor : Colors.red;
+    if (isPure) return ColorLight.neutralHare;
+    return isValid ? validBorderColor : Colors.red;
   }
+
+  bool get _shouldShowValidIcon => !isPure && isValid && validText != null;
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +43,29 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          controller: widget.controller,
-          obscureText: _isObscured,
+          controller: controller,
+          focusNode: focusNode,
+          onChanged: onChanged,
+          textInputAction: textInputAction ?? TextInputAction.next,
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w800,
             color: ColorLight.neutralWolf,
             fontSize: 18,
           ),
-          onChanged: (value) {
-            widget.onChanged?.call(value);
-          },
           decoration: InputDecoration(
-            hintText: widget.hint,
+            hintText: hint,
             hintStyle: GoogleFonts.nunito(
               fontWeight: FontWeight.w800,
               color: ColorLight.neutralHare,
               fontSize: 18,
             ),
-
+            suffixIcon: _shouldShowValidIcon
+                ? Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SvgPicture.asset(Assets.iconsIcValidated),
+            )
+                : null,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: _mainColor),
@@ -69,24 +74,14 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: _mainColor, width: 2),
             ),
-
-            suffixIcon: IconButton(
-              icon: Icon(
-                _isObscured ? Icons.visibility_off : Icons.visibility,
-                color: ColorLight.neutralHare,
-              ),
-              onPressed: () => setState(() => _isObscured = !_isObscured),
-            ),
           ),
         ),
 
-        if (!widget.isPure)
+        if (!isPure)
           Padding(
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
-              widget.isValid
-                  ? (widget.validText ?? "")
-                  : (widget.errorText ?? ""),
+              isValid ? (validText ?? "") : (errorText ?? ""),
               style: GoogleFonts.nunito(
                 color: _mainColor,
                 fontSize: 13,

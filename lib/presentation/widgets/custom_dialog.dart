@@ -14,6 +14,7 @@ void showNotifyDialog(BuildContext context, String message) {
     builder: (BuildContext context) {
       return Dialog(
         backgroundColor: Colors.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
@@ -93,6 +94,7 @@ void showNotifyColumnOptionDialog({
     builder: (BuildContext context) {
       return Dialog(
         backgroundColor: Colors.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
@@ -191,6 +193,7 @@ void showNotifyRowOptionDialog({
     builder: (BuildContext context) {
       return Dialog(
         backgroundColor: Colors.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
