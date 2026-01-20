@@ -31,6 +31,7 @@ class AppString {
   static const String signUp = "Đăng ký";
   static const String passwordAtleast6 = "Mật khẩu phải có ít nhất 6 ký tự";
   static const String passwordNotValid = "Mật khẩu không hợp lệ";
+  static String showDeviceId(String id) => "ID thiết bị: $id";
   //dialog
   static const String signInWithFbFail = "Đăng nhập bằng Facebook thất bại";
   static const String signInWithGgFail = "Đăng nhập bằng Google thất bại";

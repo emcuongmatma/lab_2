@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/domain/usecase/auth_usecase.dart';
@@ -47,9 +46,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
               const SizedBox(height: 47),
               Text(
                 AppString.updatingData,
-                style: GoogleFonts.nunito(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 28,
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: ColorLight.neutralEel,
                 ),
                 textAlign: TextAlign.center,
@@ -87,9 +84,8 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                     ),
                     Text(
                       "55%",
-                      style: GoogleFonts.nunito(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontSize: 48,
-                        fontWeight: FontWeight.w900,
                         color: ColorLight.blueLight,
                       ),
                     ),
@@ -107,9 +103,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   Expanded(
                     child: Text(
                       AppString.updateAccountInfo,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: ColorLight.blueLight,
                       ),
                     ),
@@ -127,9 +121,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   Expanded(
                     child: Text(
                       AppString.updateProfile,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: ColorLight.blueLight,
                       ),
                     ),
@@ -147,9 +139,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   Expanded(
                     child: Text(
                       AppString.updateSubscription,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 15,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: ColorLight.blueLight,
                       ),
                     ),

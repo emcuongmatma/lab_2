@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -37,10 +36,8 @@ class _LevelStepState extends State<LevelStep> {
             Flexible(
               child: Text(
                 AppString.presentLevel,
-                style: GoogleFonts.nunito(
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   color: ColorLight.neutralEel,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22,
                 ),
                 overflow: TextOverflow.visible,
               ),
@@ -79,9 +76,7 @@ class _LevelStepState extends State<LevelStep> {
                       child: Text(
                         _levelList[index],
                         maxLines: 2,
-                        style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: _selectedLevel == index
                               ? ColorLight.blueLight
                               : ColorLight.neutralEel,

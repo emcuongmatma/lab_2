@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -50,10 +49,8 @@ class _NameStepState extends State<NameStep> {
             ),
             Text(
               AppString.yourName,
-              style: GoogleFonts.nunito(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: ColorLight.neutralEel,
-                fontWeight: FontWeight.w900,
-                fontSize: 22,
               ),
             ),
           ],

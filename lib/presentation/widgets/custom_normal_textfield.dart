@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/utils/validators.dart';
@@ -41,17 +40,16 @@ class _CustomNormalTextFieldState extends State<CustomNormalTextField> {
       controller: widget.controller,
       focusNode: widget.focusNode,
       textInputAction: widget.textInputAction ?? TextInputAction.next,
-      style: GoogleFonts.nunito(
-        fontWeight: FontWeight.w800,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
         color: ColorLight.neutralWolf,
-        fontSize: 18,
+        fontSize: 20,
       ),
       decoration: InputDecoration(
         hintText: widget.hint,
-        hintStyle: GoogleFonts.nunito(
+        hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.w800,
           color: ColorLight.neutralHare,
-          fontSize: 18,
+          fontSize: 20,
         ),
         suffixIcon: isValidated
             ? IconButton(

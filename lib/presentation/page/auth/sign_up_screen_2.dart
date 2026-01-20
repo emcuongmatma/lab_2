@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
@@ -87,9 +86,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                     Text(
                       AppString.createPassword,
                       textAlign: TextAlign.start,
-                      style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 22,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: ColorLight.neutralEel,
                       ),
                     ),

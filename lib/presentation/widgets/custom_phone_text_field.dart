@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 
@@ -47,17 +46,15 @@ class CustomPhoneTextField extends StatelessWidget {
           focusNode: focusNode,
           onChanged: onChanged,
           textInputAction: textInputAction ?? TextInputAction.next,
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w800,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: ColorLight.neutralWolf,
-            fontSize: 18,
+            fontSize: 20,
           ),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.nunito(
-              fontWeight: FontWeight.w800,
+            hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: ColorLight.neutralHare,
-              fontSize: 18,
+              fontSize: 20,
             ),
             suffixIcon: _shouldShowValidIcon
                 ? Padding(
@@ -72,7 +69,7 @@ class CustomPhoneTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: _mainColor, width: 2),
+              borderSide: BorderSide(color: _mainColor),
             ),
           ),
         ),
@@ -82,10 +79,8 @@ class CustomPhoneTextField extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
               isValid ? (validText ?? "") : (errorText ?? ""),
-              style: GoogleFonts.nunito(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: _mainColor,
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
               ),
             ),
           ),

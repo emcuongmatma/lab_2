@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
@@ -25,9 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 66),
                 child: Text(
                   AppString.welcomeToMonkeyStory,
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 26,
+                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     color: ColorLight.blueLight,
                   ),
                   textAlign: TextAlign.center,

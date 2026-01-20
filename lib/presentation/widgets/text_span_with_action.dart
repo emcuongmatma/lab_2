@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/colors.dart';
 
 class TextSpanWithAction extends StatelessWidget {
   final String text1;
@@ -19,18 +19,15 @@ class TextSpanWithAction extends StatelessWidget {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: GoogleFonts.nunito(
-          fontWeight: FontWeight.w800,
-          color: const Color(0xFF777777),
-          fontSize: 14,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: ColorLight.neutralWolf,
         ),
         children: <TextSpan>[
           TextSpan(text: text1),
           TextSpan(
             text: text2,
-            style: GoogleFonts.nunito(
-              fontWeight: FontWeight.w800,
-              color: const Color(0xFF3393FF),
+            style: const TextStyle(
+              color: ColorLight.primary,
               decoration: TextDecoration.underline,
             ),
             recognizer: TapGestureRecognizer()

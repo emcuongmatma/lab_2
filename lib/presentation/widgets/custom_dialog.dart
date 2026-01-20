@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -14,9 +13,6 @@ void showNotifyDialog(BuildContext context, String message) {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: Colors.white,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -29,9 +25,7 @@ void showNotifyDialog(BuildContext context, String message) {
                   const SizedBox(height: 12),
                   Text(
                     AppString.noti,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: ColorLight.neutralEel,
                     ),
                   ),
@@ -39,9 +33,7 @@ void showNotifyDialog(BuildContext context, String message) {
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorLight.neutralWolf,
                     ),
                   ),
@@ -94,9 +86,6 @@ void showNotifyColumnOptionDialog({
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: Colors.white,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -109,9 +98,7 @@ void showNotifyColumnOptionDialog({
                   const SizedBox(height: 12),
                   Text(
                     AppString.noti,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: ColorLight.neutralEel,
                     ),
                   ),
@@ -119,9 +106,7 @@ void showNotifyColumnOptionDialog({
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorLight.neutralWolf,
                     ),
                   ),
@@ -193,9 +178,6 @@ void showNotifyRowOptionDialog({
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: Colors.white,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -208,9 +190,7 @@ void showNotifyRowOptionDialog({
                   const SizedBox(height: 12),
                   Text(
                     AppString.noti,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 24,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       color: ColorLight.neutralEel,
                     ),
                   ),
@@ -218,9 +198,7 @@ void showNotifyRowOptionDialog({
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: ColorLight.neutralWolf,
                     ),
                   ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
@@ -146,11 +145,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "ID thiết bị: 100600",
-                          style: GoogleFonts.nunito(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 14,
-                            color: const Color(0xFFAFAFAF),
+                          AppString.showDeviceId("100600"),
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: ColorLight.neutralHare,
                           ),
                         ),
                         InkWell(
@@ -158,10 +155,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(8),
                           child: Text(
                             AppString.forgotPassword,
-                            style: GoogleFonts.nunito(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
-                              color: const Color(0xFF777777),
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: ColorLight.neutralWolf,
                             ),
                           ),
                         ),

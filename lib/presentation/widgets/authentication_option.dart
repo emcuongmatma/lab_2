@@ -31,21 +31,21 @@ class AuthenticationOption extends StatelessWidget {
         Row(
           children: [
             const Expanded(
-              child: Divider(thickness: 1, color: Color(0xFFD0D5DD)),
+              child: Divider(thickness: 1, color: ColorLight.neutralHare),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 optionText,
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                style: const TextStyle(
+                  color: ColorLight.neutralWolf,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
                 ),
               ),
             ),
             const Expanded(
-              child: Divider(thickness: 1, color: Color(0xFFD0D5DD)),
+              child: Divider(thickness: 1, color: ColorLight.neutralHare),
             ),
           ],
         ),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:formz/formz.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
@@ -45,20 +43,18 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
         TextFormField(
           controller: widget.controller,
           obscureText: _isObscured,
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w800,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: ColorLight.neutralWolf,
-            fontSize: 18,
+            fontSize: 20,
           ),
           onChanged: (value) {
             widget.onChanged?.call(value);
           },
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: GoogleFonts.nunito(
-              fontWeight: FontWeight.w800,
+            hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: ColorLight.neutralHare,
-              fontSize: 18,
+              fontSize: 20,
             ),
 
             enabledBorder: OutlineInputBorder(
@@ -67,7 +63,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: _mainColor, width: 2),
+              borderSide: BorderSide(color: _mainColor,),
             ),
 
             suffixIcon: IconButton(
@@ -87,10 +83,8 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
               widget.isValid
                   ? (widget.validText ?? "")
                   : (widget.errorText ?? ""),
-              style: GoogleFonts.nunito(
-                color: _mainColor,
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: _mainColor
               ),
             ),
           ),

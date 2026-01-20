@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -16,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
   };
 
   const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
               if (context.canPop()) context.pop();
             },
             icon: const Icon(
-              Icons.arrow_back_ios_new,
+              Icons.arrow_back_ios,
               color: ColorLight.gray400,
               weight: 40,
             ),
@@ -35,11 +35,9 @@ class ProfileScreen extends StatelessWidget {
         ),
         title: Text(
           AppString.studyProfile,
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w900,
-            fontSize: 20,
-            color: ColorLight.gray700,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(color: ColorLight.gray700),
         ),
         centerTitle: true,
         actions: [
@@ -168,9 +166,7 @@ class ProfileItem extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           profile.name,
-          style: GoogleFonts.nunito(
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: ColorLight.gray700,
           ),
           textAlign: TextAlign.center,
@@ -207,9 +203,7 @@ class AddProfileItem extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppString.add,
-            style: GoogleFonts.nunito(
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorLight.gray300,
             ),
             textAlign: TextAlign.center,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/colors.dart';
 
 class CustomElevatedButton extends StatelessWidget {
@@ -37,8 +36,7 @@ class CustomElevatedButton extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             text,
-            style: GoogleFonts.nunito(
-              fontWeight: FontWeight.w800,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontSize: 20,
               color: onClick == null ? ColorLight.disableButtonText : textColor,
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -43,10 +42,8 @@ class _BirthStepState extends State<BirthStep> {
             Flexible(
               child: Text(
                 AppString.birthYear(widget.username),
-                style: GoogleFonts.nunito(
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   color: ColorLight.neutralEel,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22,
                 ),
                 overflow: TextOverflow.visible,
               ),
@@ -81,9 +78,7 @@ class _BirthStepState extends State<BirthStep> {
                 ),
                 child: Text(
                   "$year",
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: isSelected
                         ? ColorLight.blueLight
                         : ColorLight.neutralWolf,
@@ -112,9 +107,7 @@ class _BirthStepState extends State<BirthStep> {
             child: Text(
               AppString.bornBefore2010,
               textAlign: TextAlign.center,
-              style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: _selectedYear == 2009
                     ? ColorLight.blueLight
                     : ColorLight.neutralWolf,
