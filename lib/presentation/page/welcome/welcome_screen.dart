@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/generated/assets.dart';
@@ -23,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 66),
                 child: Text(
-                  "Chào mừng bạn đến Monkey Stories",
+                  AppString.welcomeToMonkeyStory,
                   style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w900,
                     fontSize: 26,
@@ -64,7 +65,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               CustomElevatedButton(
-                text: "Tiếp tục",
+                text: AppString.continu,
                 onClick: () {
                   context.goNamed(
                     AppRouteName.PROFILE_SETUP_ROUTE_NAME,

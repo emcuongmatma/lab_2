@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
@@ -82,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     spacing: 12,
                     children: [
                       Text(
-                        "Nhập số điện thoại",
+                        AppString.enterPhone,
                         textAlign: TextAlign.start,
                         style: GoogleFonts.nunito(
                           fontWeight: FontWeight.w800,
@@ -91,11 +92,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       CustomPhoneTextField(
-                        hint: "Số điện thoại",
+                        hint: AppString.phone,
                         isValid: _usernameInput.isValid,
                         isPure: _usernameInput.isPure,
                         textInputAction: TextInputAction.done,
-                        validText: "Số điện thoại khả dụng",
+                        validText: AppString.phoneAvailable,
                         validBorderColor: ColorLight.primaryGreen,
                         onChanged: (val) {
                           setState(() {
@@ -109,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: CustomElevatedButton(
-                      text: "Tiếp tục",
+                      text: AppString.continu,
                       onClick: _usernameInput.isValid
                           ? () {
                               checkPhoneNumber(
@@ -122,10 +123,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 showPhoneUsedDialog: () {
                                   showNotifyRowOptionDialog(
                                     context: context,
-                                    message:
-                                        "Số điện thoại này đã được đăng ký với Monkey, ba mẹ hãy đăng nhập nhé.",
-                                    buttonText1: "Huỷ",
-                                    buttonText2: "Đăng nhập",
+                                    message: AppString.phoneAlreadyRegisted,
+                                    buttonText1: AppString.cancel,
+                                    buttonText2: AppString.signin,
                                     onAction2: () => context.pushNamed(
                                       AppRouteName.LOGIN_ROUTE_NAME,
                                     ),
@@ -137,35 +137,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   AuthenticationOption(
-                    optionText: "Hoặc đăng ký với",
-                    text1: "Tôi đã có tài khoản. ",
-                    text2: "Đăng nhập",
+                    optionText: AppString.orSignUpWith,
+                    text1: AppString.alreadyHaveAccount,
+                    text2: AppString.signin,
                     onFacebookAction: () {
                       showNotifyDialog(
                         context,
-                        "Đăng nhập bằng Facebook thất bại",
+                        AppString.signInWithFbFail,
                       );
                     },
                     onGoogleAction: () {
                       showNotifyDialog(
                         context,
-                        "Đăng nhập bằng Google thất bại",
+                        AppString.signInWithGgFail,
                       );
                     },
                     onAppleAction: () {
                       showNotifyDialog(
                         context,
-                        "Đăng nhập bằng Apple thất bại",
+                        AppString.signInWithApFail,
                       );
                     },
                     onAction: () {
                       if (_usernameInput.value.isNotEmpty) {
                         showNotifyRowOptionDialog(
                           context: context,
-                          message:
-                              "Ba mẹ sẽ mất đi hồ sơ học ${_usernameInput.value}, ba mẹ có muốn đăng nhập không?",
-                          buttonText1: "Huỷ",
-                          buttonText2: "Đăng nhập",
+                          message: AppString.warningProfile(_usernameInput.value),
+                          buttonText1: AppString.cancel,
+                          buttonText2: AppString.signin,
                           onAction2: () =>
                               context.goNamed(AppRouteName.LOGIN_ROUTE_NAME),
                         );

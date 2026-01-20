@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
@@ -33,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Hồ sơ học tập",
+          AppString.studyProfile,
           style: GoogleFonts.nunito(
             fontWeight: FontWeight.w900,
             fontSize: 20,
@@ -98,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 32),
               child: TextSpanWithAction(
                 text1: "",
-                text2: "Nhập mã kích hoạt",
+                text2: AppString.enterActiveCode,
                 onAction: () {},
               ),
             ),
@@ -205,7 +206,7 @@ class AddProfileItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Thêm",
+            AppString.add,
             style: GoogleFonts.nunito(
               fontWeight: FontWeight.w700,
               fontSize: 14,

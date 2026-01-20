@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
@@ -41,7 +42,7 @@ class _BirthStepState extends State<BirthStep> {
             SizedBox(width: 148, height: 168, child: Image.asset(Assets.imagesMonkeyFillInfoImage)),
             Flexible(
               child: Text(
-                "${widget.username} sinh vào năm nào?",
+                AppString.birthYear(widget.username),
                 style: GoogleFonts.nunito(
                   color: ColorLight.neutralEel,
                   fontWeight: FontWeight.w900,
@@ -109,7 +110,7 @@ class _BirthStepState extends State<BirthStep> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              "Sinh trước năm 2010",
+              AppString.bornBefore2010,
               textAlign: TextAlign.center,
               style: GoogleFonts.nunito(
                 fontWeight: FontWeight.w700,
@@ -125,7 +126,7 @@ class _BirthStepState extends State<BirthStep> {
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: CustomElevatedButton(
-            text: "Tiếp tục",
+            text: AppString.continu,
             onClick: _selectedYear != null
                 ? () {
               FocusScope.of(context).unfocus();

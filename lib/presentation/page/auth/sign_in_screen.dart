@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
@@ -43,11 +44,11 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_usernameInput.isPure) return null;
     switch (_usernameInput.error) {
       case PhoneValidationError.empty:
-        return "Không được bỏ trống";
+        return AppString.doNotEmpty;
       case PhoneValidationError.invalid:
-        return "Số điện thoại cần nhập 6 - 15 chữ số";
+        return AppString.lengthFrom6To15;
       case PhoneValidationError.notFound:
-        return "Số điện thoại hoặc mật khẩu không đúng";
+        return AppString.wrongPhoneOrPassword;
       default:
         return null;
     }
@@ -57,7 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_passwordInput.isPure) return null;
     switch (_passwordInput.error) {
       case PasswordValidationError.empty:
-        return "Không được bỏ trống";
+        return AppString.doNotEmpty;
       default:
         return null;
     }
@@ -121,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   spacing: 12,
                   children: [
                     CustomPhoneTextField(
-                      hint: "Số điện thoại/Tên đăng nhập",
+                      hint: AppString.phoneOrUsername,
                       isValid: _usernameInput.isValid,
                       isPure: _usernameInput.isPure,
                       errorText: _usernameStatusText,
@@ -133,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                     CustomPasswordTextField(
-                      hint: "Mật khẩu",
+                      hint: AppString.password,
                       isValid: _passwordInput.isValid,
                       isPure: _passwordInput.isPure,
                       errorText: _passwordStatusText,
@@ -160,7 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           onTap: () {},
                           borderRadius: BorderRadius.circular(8),
                           child: Text(
-                            "Quên mật khẩu?",
+                            AppString.forgotPassword,
                             style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w800,
                               fontSize: 14,
@@ -173,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ],
                 ),
                 CustomElevatedButton(
-                  text: "Đăng nhập",
+                  text: AppString.signin,
                   onClick: () {
                     setState(() {
                       _usernameInput = PhoneInput.dirty(_username);
@@ -187,15 +188,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         showForgotPasswordDialog: () {
                           showNotifyColumnOptionDialog(
                             context: context,
-                            message:
-                                "Bạn đã nhập sai mật khẩu quá 5 lần.\nChọn \"Quên mật khẩu\" để khôi phục nhé.",
-                            buttonText1: "Quên mật khẩu",
-                            buttonText2: "Thử lại",
-                            onAction2:() {
+                            message: AppString.wrongPasswordMessage,
+                            buttonText1: AppString.forgotPassword,
+                            buttonText2: AppString.retry,
+                            onAction2: () {
                               setState(() {
                                 _failedAttemptsCount = 0;
                               });
-                            }
+                            },
                           );
                         },
                       );
@@ -203,25 +203,22 @@ class _SignInScreenState extends State<SignInScreen> {
                   },
                 ),
                 TextSpanWithAction(
-                  text1: "Nếu bạn có mã kích hoạt, ",
-                  text2: "Nhập tại đây",
+                  text1: AppString.ifYouHaveActiveCode,
+                  text2: AppString.enterHere,
                   onAction: () {},
                 ),
                 AuthenticationOption(
-                  optionText: "Hoặc đăng nhập với",
-                  text1: "Bạn chưa có tài khoản? ",
-                  text2: "Đăng ký",
+                  optionText: AppString.orSignInWith,
+                  text1: AppString.dontHaveAccount,
+                  text2: AppString.signUp,
                   onFacebookAction: () {
-                    showNotifyDialog(
-                      context,
-                      "Đăng nhập bằng Facebook thất bại",
-                    );
+                    showNotifyDialog(context, AppString.signInWithFbFail);
                   },
                   onGoogleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
+                    showNotifyDialog(context, AppString.signInWithGgFail);
                   },
                   onAppleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
+                    showNotifyDialog(context, AppString.signInWithApFail);
                   },
                   onAction: () => context.push(AppRoutePath.SIGNUP_ROUTE_PATH),
                 ),

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:lab_2/common/app_string.dart';
 
 class ApiException implements Exception {
   final String message;
@@ -10,15 +11,15 @@ class ApiException implements Exception {
 ApiException mapDioError(DioException e) {
   switch (e.type) {
     case DioExceptionType.connectionTimeout:
-      return ApiException('Kết nối quá lâu');
+      return ApiException(AppString.timeoutMessage);
     case DioExceptionType.receiveTimeout:
-      return ApiException('Server không phản hồi');
+      return ApiException(AppString.notResponseMessage);
     case DioExceptionType.badResponse:
       return ApiException(
-        e.response?.data['message'] ?? 'Tài khoản hoặc mật khẩu không đúng',
+        e.response?.data['message'] ?? AppString.wrongPhoneOrPassword,
         statusCode: e.response?.statusCode,
       );
     default:
-      return ApiException('Lỗi không xác định');
+      return ApiException(AppString.undefinedMessage);
   }
 }

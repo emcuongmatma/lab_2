@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
@@ -48,7 +49,7 @@ class _NameStepState extends State<NameStep> {
               child: Image.asset(Assets.imagesMonkeyFillInfoImage),
             ),
             Text(
-              "Tên của bé là?",
+              AppString.yourName,
               style: GoogleFonts.nunito(
                 color: ColorLight.neutralEel,
                 fontWeight: FontWeight.w900,
@@ -58,7 +59,7 @@ class _NameStepState extends State<NameStep> {
           ],
         ),
         CustomNormalTextField(
-          hint: "Tên",
+          hint: AppString.name,
           controller: _controller,
           onValidate: (isValidated) {
             setState(() {
@@ -74,7 +75,7 @@ class _NameStepState extends State<NameStep> {
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: CustomElevatedButton(
-            text: "Tiếp tục",
+            text: AppString.continu,
             onClick: _isValidated
                 ? () {
               if (_nameFocus.hasFocus) {

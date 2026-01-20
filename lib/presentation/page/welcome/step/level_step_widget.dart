@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
@@ -19,10 +20,10 @@ class _LevelStepState extends State<LevelStep> {
 
   int? _selectedLevel;
   final _levelList = [
-    "Bé chưa biết gì về tiếng Anh",
-    "Bé nhận biết được vài từ đơn giản",
-    "Bé hiểu được câu ngắn, đơn giản",
-    "Bé đọc hiểu đoạn văn ngắn",
+    AppString.level0Des,
+    AppString.level1Des,
+    AppString.level2Des,
+    AppString.level3Des,
   ];
 
   @override
@@ -35,7 +36,7 @@ class _LevelStepState extends State<LevelStep> {
             SizedBox(width: 148, height: 168, child: Image.asset(Assets.imagesMonkeyFillInfoImage)),
             Flexible(
               child: Text(
-                "Khả năng tiếng Anh hiện tại của bé?",
+                AppString.presentLevel,
                 style: GoogleFonts.nunito(
                   color: ColorLight.neutralEel,
                   fontWeight: FontWeight.w900,
@@ -72,7 +73,7 @@ class _LevelStepState extends State<LevelStep> {
                 child: Row(
                   spacing: 24,
                   children: [
-                    SvgPicture.asset("assets/icons/ic_level_$index.svg"),
+                    SvgPicture.asset(AppString.getImageLevel(index)),
                     Expanded(
                       flex: 1,
                       child: Text(
@@ -97,7 +98,7 @@ class _LevelStepState extends State<LevelStep> {
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: CustomElevatedButton(
-            text: "Tiếp tục",
+            text: AppString.continu,
             onClick: _selectedLevel != null
                 ? () {
               widget.onFinish(_selectedLevel ?? -1);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
@@ -29,7 +30,10 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
   final _repo = di.locator<AuthRepository>();
   bool _isLoading = false;
 
-  Future<void> signUp({required VoidCallback onSuccess, required VoidCallback onFail}) async {
+  Future<void> signUp({
+    required VoidCallback onSuccess,
+    required VoidCallback onFail,
+  }) async {
     setState(() {
       _isLoading = true;
     });
@@ -89,7 +93,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                   spacing: 12,
                   children: [
                     Text(
-                      "Tạo mật khẩu",
+                      AppString.createPassword,
                       textAlign: TextAlign.start,
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w800,
@@ -98,11 +102,11 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                       ),
                     ),
                     CustomPasswordTextField(
-                      hint: "Nhập mật khẩu",
+                      hint: AppString.enterPassword,
                       isValid: _password.isValid,
                       isPure: _password.isPure,
                       errorText: _passwordStatusText,
-                      validText: "Mật khẩu hợp lệ",
+                      validText: AppString.passwordValid,
                       validBorderColor: ColorLight.primaryGreen,
                       onChanged: (val) {
                         setState(() {
@@ -116,18 +120,18 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                     ),
 
                     CustomPasswordTextField(
-                      hint: "Nhập lại mật khẩu",
+                      hint: AppString.reEnterPassword,
                       validBorderColor: ColorLight.primaryGreen,
                       isValid:
                           _password.value == _rePassword.value &&
                           _password.value.isNotEmpty,
                       isPure: _rePassword.isPure,
                       errorText: _password.value != _rePassword.value
-                          ? "Mật khẩu không trùng khớp"
+                          ? AppString.passwordNotMatch
                           : null,
                       validText: _password.value != _rePassword.value
                           ? null
-                          : "Mật khẩu trùng khớp",
+                          : AppString.passwordMatch,
                       onChanged: (val) {
                         setState(() {
                           _rePassword = PasswordInput.dirty(val);
@@ -144,7 +148,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                 SizedBox(
                   width: double.infinity,
                   child: CustomElevatedButton(
-                    text: "Tiếp tục",
+                    text: AppString.continu,
                     onClick: _allValidated
                         ? () {
                             signUp(
@@ -152,33 +156,32 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
                                 AppRouteName.WELCOME_ROUTE_NAME,
                                 pathParameters: {
                                   'username': widget.username ?? "",
-                                }
+                                },
                               ),
                               onFail: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Không thể nhận dạng số điện thoại")),
+                                  const SnackBar(
+                                    content: Text(AppString.canNotReconPhone),
+                                  ),
                                 );
-                              }
+                              },
                             );
                           }
                         : null,
                   ),
                 ),
                 AuthenticationOption(
-                  optionText: "Hoặc đăng ký với",
-                  text1: "Tôi đã có tài khoản. ",
-                  text2: "Đăng nhập",
+                  optionText: AppString.orSignUpWith,
+                  text1: AppString.alreadyHaveAccount,
+                  text2: AppString.signin,
                   onFacebookAction: () {
-                    showNotifyDialog(
-                      context,
-                      "Đăng nhập bằng Facebook thất bại",
-                    );
+                    showNotifyDialog(context, AppString.signInWithFbFail);
                   },
                   onGoogleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Google thất bại");
+                    showNotifyDialog(context, AppString.signInWithGgFail);
                   },
                   onAppleAction: () {
-                    showNotifyDialog(context, "Đăng nhập bằng Apple thất bại");
+                    showNotifyDialog(context, AppString.signInWithApFail);
                   },
                   onAction: () => context.go(AppRoutePath.LOGIN_ROUTE_PATH),
                 ),
@@ -195,11 +198,11 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     if (_password.isPure) return null;
     switch (_password.error) {
       case PasswordValidationError.empty:
-        return "Không được bỏ trống";
+        return AppString.doNotEmpty;
       case PasswordValidationError.tooShort:
-        return "Mật khẩu phải có ít nhất 6 ký tự";
+        return AppString.passwordAtleast6;
       case PasswordValidationError.invalid:
-        return "Mật khẩu không hợp lệ";
+        return AppString.passwordNotValid;
       default:
         return null;
     }

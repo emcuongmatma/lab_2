@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
 import 'package:lab_2/injection.dart' as di;
@@ -52,7 +53,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
             children: [
               const SizedBox(height: 47),
               Text(
-                "Monkey đang cập nhật dữ liệu học tập của bé",
+                AppString.updatingData,
                 style: GoogleFonts.nunito(
                   fontWeight: FontWeight.w900,
                   fontSize: 28,
@@ -112,7 +113,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      "Cập nhật thông tin tài khoản sử dụng",
+                      AppString.updateAccountInfo,
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
@@ -132,7 +133,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      "Cập nhật hồ sơ học tập",
+                      AppString.updateProfile,
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w800,
                         fontSize: 15,
@@ -152,7 +153,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      "Cập nhật thông tin gói học",
+                     AppString.updateSubscription,
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w800,
                         fontSize: 15,

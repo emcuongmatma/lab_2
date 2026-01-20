@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/custom_elevated_button.dart';
@@ -27,7 +28,7 @@ void showNotifyDialog(BuildContext context, String message) {
                   Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
-                    "Thông báo",
+                    AppString.noti,
                     style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
@@ -51,7 +52,7 @@ void showNotifyDialog(BuildContext context, String message) {
                         context.pop();
                       }
                     },
-                    text: "Tôi đã hiểu",
+                    text: AppString.gotIt,
                   ),
                 ],
               ),
@@ -107,7 +108,7 @@ void showNotifyColumnOptionDialog({
                   Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
-                    "Thông báo",
+                    AppString.noti,
                     style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
@@ -206,7 +207,7 @@ void showNotifyRowOptionDialog({
                   Image.asset(Assets.imagesMonkeyFailure, height: 120),
                   const SizedBox(height: 12),
                   Text(
-                    "Thông báo",
+                    AppString.noti,
                     style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
