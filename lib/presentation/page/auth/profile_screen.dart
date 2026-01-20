@@ -4,16 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
+import 'package:lab_2/data/model/profile.dart';
+import 'package:lab_2/domain/usecase/auth_usecase.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/widgets/text_span_with_action.dart';
+import 'package:lab_2/injection.dart' as di;
 
 class ProfileScreen extends StatelessWidget {
-  static const profiles = {
-    "Hải Long": "",
-    "Thanh Tâm": "",
-    // "hehe": "huhu"
-  };
-
   const ProfileScreen({super.key});
 
   @override
@@ -54,66 +51,68 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          children: [
-            const Spacer(),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.8,
-              ),
-              itemCount: profiles.length % 2 == 0
-                  ? profiles.length
-                  : profiles.length + 1,
-              itemBuilder: (context, index) {
-                if (index < profiles.length) {
-                  return ProfileItem(
-                    profile: Profile(
-                      "Hehe",
-                      "https://cellphones.com.vn/sforum/wp-content/uploads/2024/02/avatar-anh-meo-cute-3.jpg",
-                      0xFFDBF1FF,
+      body: FutureBuilder(
+        future: di.locator<AuthUseCase>().fetchProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            List<Profile> profiles = snapshot.data!.match(
+              (failure) => <Profile>[],
+              (result) => result,
+            );
+            debugPrint(profiles.toString());
+            snapshot.data?.match((failure) {}, (result) => profiles = result);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.8,
+                        ),
+                    itemCount: profiles.length % 2 == 0
+                        ? profiles.length
+                        : profiles.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index < profiles.length) {
+                        return ProfileItem(profile: profiles[index]);
+                      } else {
+                        return AddProfileItem(onClick: () {});
+                      }
+                    },
+                  ),
+                  if (profiles.length % 2 == 0)
+                    Center(
+                      child: SizedBox(
+                        width: (MediaQuery.of(context).size.width - 50 - 8) / 2,
+                        child: AddProfileItem(onClick: () {}),
+                      ),
                     ),
-                  );
-                } else {
-                  return AddProfileItem(onClick: () {});
-                }
-              },
-            ),
-            if (profiles.length % 2 == 0)
-              Center(
-                child: SizedBox(
-                  width: (MediaQuery.of(context).size.width - 50 - 8) / 2,
-                  child: AddProfileItem(onClick: () {}),
-                ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: TextSpanWithAction(
+                      text1: "",
+                      text2: AppString.enterActiveCode,
+                      onAction: () {},
+                    ),
+                  ),
+                ],
               ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32),
-              child: TextSpanWithAction(
-                text1: "",
-                text2: AppString.enterActiveCode,
-                onAction: () {},
-              ),
-            ),
-          ],
-        ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
-}
-
-class Profile {
-  String name;
-  String imageUrl;
-  int backgroundColor;
-
-  Profile(this.name, this.imageUrl, this.backgroundColor);
 }
 
 class ProfileItem extends StatelessWidget {
@@ -128,7 +127,7 @@ class ProfileItem extends StatelessWidget {
         AspectRatio(
           aspectRatio: 1,
           child: Card(
-            color: Color(profile.backgroundColor),
+            color: Color(int.parse(profile.backgroundColor!)),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(36)),
             ),
@@ -141,7 +140,7 @@ class ProfileItem extends StatelessWidget {
                   color: Color.fromRGBO(0, 0, 0, 0.08),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: profile.imageUrl,
+                  imageUrl: profile.avatar ?? "",
                   imageBuilder: (context, imageProvider) => Container(
                     width: 120,
                     height: 120,
@@ -165,10 +164,10 @@ class ProfileItem extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          profile.name,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: ColorLight.gray700,
-          ),
+          profile.name ?? "",
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: ColorLight.gray700),
           textAlign: TextAlign.center,
         ),
       ],
@@ -203,9 +202,9 @@ class AddProfileItem extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             AppString.add,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: ColorLight.gray300,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: ColorLight.gray300),
             textAlign: TextAlign.center,
           ),
         ],

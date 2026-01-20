@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:lab_2/common/failure.dart';
+import 'package:lab_2/data/model/profile.dart';
 import 'package:lab_2/data/repository/auth_repository.dart';
 
 class AuthUseCase {
@@ -26,5 +27,8 @@ class AuthUseCase {
     required Map<String, Object?> userInfo
   }) {
     return repo.updateProfile(userInfo);
+  }
+  Future<Either<Failure, List<Profile>>> fetchProfile() {
+    return repo.fetchProfile();
   }
 }

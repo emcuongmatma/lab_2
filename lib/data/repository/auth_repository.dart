@@ -6,6 +6,7 @@ import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/failure.dart';
 import 'package:lab_2/core/network/api_exception.dart';
 import 'package:lab_2/data/datasource/auth_api.dart';
+import 'package:lab_2/data/model/profile.dart';
 import 'package:lab_2/data/model/user_profile.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
@@ -22,7 +23,8 @@ class AuthRepository {
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }
-  Future<Either<Failure,Unit>> login(String id, String password) async {
+
+  Future<Either<Failure, Unit>> login(String id, String password) async {
     try {
       final result = await _api.login(id);
       debugPrint("hehehe : ${result.toString()}");
@@ -38,7 +40,7 @@ class AuthRepository {
     }
   }
 
-  Future<Either<Failure,bool>> isAvailable(String id) async {
+  Future<Either<Failure, bool>> isAvailable(String id) async {
     try {
       final result = await _api.checkIdExists(id);
       return right(result == null);
@@ -49,11 +51,13 @@ class AuthRepository {
     }
   }
 
-  Future<Either<Failure,Unit>> signUp(String id, String password) async {
+  Future<Either<Failure, Unit>> signUp(String id, String password) async {
     try {
       final user = UserProfile(id: id, name: id, password: password);
       final result = await _api.signUp(user);
-      return result.containsKey("id") ? right(unit) : left(const AuthFailure(AppString.undefinedMessage));
+      return result.containsKey("id")
+          ? right(unit)
+          : left(const AuthFailure(AppString.undefinedMessage));
     } on ApiException catch (e) {
       return left(NetworkFailure(e.message));
     } catch (_) {
@@ -61,12 +65,28 @@ class AuthRepository {
     }
   }
 
-  Future<Either<Failure,Unit>> updateProfile(
+  Future<Either<Failure, Unit>> updateProfile(
     Map<String, Object?> userInfo,
   ) async {
     try {
       final result = await _api.updateProfile(userInfo);
-      return result.containsKey("id") ? right(unit) : left(const AuthFailure(AppString.undefinedMessage));
+      return result.containsKey("id")
+          ? right(unit)
+          : left(const AuthFailure(AppString.undefinedMessage));
+    } on ApiException catch (e) {
+      return left(NetworkFailure(e.message));
+    } catch (_) {
+      return left(const UnknownFailure());
+    }
+  }
+
+  Future<Either<Failure, List<Profile>>> fetchProfile() async {
+    try {
+      final result = await _api.fetchProfile();
+      debugPrint(result.map((item) => Profile.fromJson(item)).toList().toString());
+      return result.isNotEmpty
+          ? right(result.map((item) => Profile.fromJson(item)).toList())
+          : left(const AuthFailure(AppString.undefinedMessage));
     } on ApiException catch (e) {
       return left(NetworkFailure(e.message));
     } catch (_) {

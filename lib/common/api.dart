@@ -3,4 +3,6 @@ class API {
 
   // Authentication
   static const AUTH = '$BASE_URL/users';
+  //Profile
+  static const PROFILE = '$BASE_URL/profiles';
 }

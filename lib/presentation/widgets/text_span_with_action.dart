@@ -26,9 +26,10 @@ class TextSpanWithAction extends StatelessWidget {
           TextSpan(text: text1),
           TextSpan(
             text: text2,
-            style: const TextStyle(
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: ColorLight.primary,
               decoration: TextDecoration.underline,
+              decorationColor: ColorLight.primary
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {

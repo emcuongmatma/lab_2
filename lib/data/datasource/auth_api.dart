@@ -47,4 +47,13 @@ class AuthApi {
       throw mapDioError(e);
     }
   }
+
+  Future<List<dynamic>> fetchProfile() async {
+    try {
+      final response = await dio.get(API.PROFILE);
+      return response.data;
+    } on DioException catch (e) {
+      throw mapDioError(e);
+    }
+  }
 }
