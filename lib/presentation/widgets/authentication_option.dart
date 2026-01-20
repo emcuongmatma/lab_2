@@ -49,7 +49,7 @@ class AuthenticationOption extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 43),
+        const SizedBox(height: 28),
         Row(
           spacing: 12,
           children: [
