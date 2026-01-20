@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/domain/usecase/auth_usecase.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/injection.dart' as di;
 import 'package:lab_2/presentation/page/auth/model/password_input.dart';
@@ -27,7 +27,7 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
   bool _allValidated = false;
   PasswordInput _password = const PasswordInput.pure();
   PasswordInput _rePassword = const PasswordInput.pure();
-  final _repo = di.locator<AuthRepository>();
+  final _authUseCase = di.locator<AuthUseCase>();
   bool _isLoading = false;
 
   Future<void> signUp({
@@ -37,25 +37,17 @@ class _SignUpScreen2State extends State<SignUpScreen2> {
     setState(() {
       _isLoading = true;
     });
-    try {
-      if (widget.username != null) {
-        final result = await _repo.signUp(
-          widget.username ?? "",
-          _password.value,
-        );
-        if (result.success) {
-          onSuccess();
-        } else {
-          onFail();
-        }
-      }
-    } catch (e) {
-      return;
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    if (widget.username != null) {
+      final result = await _authUseCase.signup(
+        phone: widget.username ?? "",
+        password: _password.value,
+      );
+      result.match((failure) => onFail(), (_) => onSuccess());
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
-import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/domain/usecase/auth_usecase.dart';
 import 'package:lab_2/injection.dart' as di;
 
 class ProfileFinishScreen extends StatefulWidget {
@@ -15,31 +15,24 @@ class ProfileFinishScreen extends StatefulWidget {
 }
 
 class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
-  final _repo = di.locator<AuthRepository>();
+  final _authUseCase = di.locator<AuthUseCase>();
 
   Future<void> _updateUserData({
     required VoidCallback onSuccess,
     required VoidCallback onFail,
   }) async {
-    try {
-      if (widget.userInfo != null) {
-        final result = await _repo.updateProfile(widget.userInfo ?? {});
-        if (result.success) {
-          onSuccess();
-        } else {
-          onFail();
-        }
-      }
-    } catch (e) {
-      return;
-    } finally {}
+    if (widget.userInfo != null) {
+      final result = await _authUseCase.updateProfile(
+        userInfo: widget.userInfo ?? {},
+      );
+      result.match((failure) => onFail(), (_) => onSuccess());
+    }
   }
-
 
   @override
   void initState() {
     super.initState();
-    _updateUserData(onSuccess: () {  }, onFail: () {});
+    _updateUserData(onSuccess: () {}, onFail: () {});
   }
 
   @override
@@ -153,7 +146,7 @@ class _ProfileFinishScreenState extends State<ProfileFinishScreen> {
                   ),
                   Expanded(
                     child: Text(
-                     AppString.updateSubscription,
+                      AppString.updateSubscription,
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w800,
                         fontSize: 15,

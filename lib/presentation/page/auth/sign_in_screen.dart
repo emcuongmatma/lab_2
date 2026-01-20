@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/domain/usecase/auth_usecase.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/presentation/page/auth/model/password_input.dart';
 import 'package:lab_2/presentation/page/auth/model/username_input.dart';
@@ -25,7 +25,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _repo = di.locator<AuthRepository>();
+  final _authUseCase = di.locator<AuthUseCase>();
   final _controller = TextEditingController();
   String _username = "";
   String _password = "";
@@ -71,26 +71,22 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       _isLoading = true;
     });
-    try {
-      final result = await _repo.login(_username, _password);
-      if (result.success) {
-        onSuccess.call();
-      } else {
-        setState(() {
-          _usernameInput = PhoneInput.dirty(_username, true);
-          _passwordInput = const PasswordInput.pure();
-          _controller.clear();
-          _failedAttemptsCount++;
-          if (_failedAttemptsCount == 5) showForgotPasswordDialog();
-        });
-      }
-    } catch (e) {
-      return;
-    } finally {
+    final result = await _authUseCase.login(
+      phone: _username,
+      password: _password,
+    );
+    result.match((failure) {
       setState(() {
-        _isLoading = false;
+        _usernameInput = PhoneInput.dirty(_username, true);
+        _passwordInput = const PasswordInput.pure();
+        _controller.clear();
+        _failedAttemptsCount++;
+        if (_failedAttemptsCount == 5) showForgotPasswordDialog();
       });
-    }
+    }, (_) => onSuccess.call());
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

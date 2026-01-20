@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:lab_2/common/app_string.dart';
+import 'package:lab_2/common/failure.dart';
 import 'package:lab_2/core/network/api_exception.dart';
-import 'package:lab_2/core/network/api_response.dart';
-import 'package:lab_2/data/api/auth_api.dart';
+import 'package:lab_2/data/datasource/auth_api.dart';
 import 'package:lab_2/data/model/user_profile.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
@@ -20,48 +22,55 @@ class AuthRepository {
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }
-
-  Future<ApiResponse<UserProfile>> login(String id, String password) async {
+  Future<Either<Failure,Unit>> login(String id, String password) async {
     try {
       final result = await _api.login(id);
       debugPrint("hehehe : ${result.toString()}");
       if (result['password'] != password) {
-        return ApiResponse.failure("Mật khẩu không đúng");
+        return left(const AuthFailure(AppString.wrongPasswordMessage));
       }
       _controller.add(AuthenticationStatus.authenticated);
-      return ApiResponse.success(UserProfile.fromJson(result));
+      return right(unit);
     } on ApiException catch (e) {
-      return ApiResponse.failure(e.message, statusCode: e.statusCode);
+      return left(NetworkFailure(e.message));
+    } catch (_) {
+      return left(const UnknownFailure());
     }
   }
 
-  Future<ApiResponse<bool>> isAvailable(String id) async {
+  Future<Either<Failure,bool>> isAvailable(String id) async {
     try {
       final result = await _api.checkIdExists(id);
-      return ApiResponse.success(result == null);
-    } catch (e) {
-      return ApiResponse.failure(e.toString());
+      return right(result == null);
+    } on ApiException catch (e) {
+      return left(NetworkFailure(e.message));
+    } catch (_) {
+      return left(const UnknownFailure());
     }
   }
 
-  Future<ApiResponse<UserProfile>> signUp(String id, String password) async {
+  Future<Either<Failure,Unit>> signUp(String id, String password) async {
     try {
       final user = UserProfile(id: id, name: id, password: password);
       final result = await _api.signUp(user);
-      return ApiResponse.success(UserProfile.fromJson(result));
+      return result.containsKey("id") ? right(unit) : left(const AuthFailure(AppString.undefinedMessage));
     } on ApiException catch (e) {
-      return ApiResponse.failure(e.message, statusCode: e.statusCode);
+      return left(NetworkFailure(e.message));
+    } catch (_) {
+      return left(const UnknownFailure());
     }
   }
 
-  Future<ApiResponse<UserProfile>> updateProfile(
+  Future<Either<Failure,Unit>> updateProfile(
     Map<String, Object?> userInfo,
   ) async {
     try {
       final result = await _api.updateProfile(userInfo);
-      return ApiResponse.success(UserProfile.fromJson(result));
+      return result.containsKey("id") ? right(unit) : left(const AuthFailure(AppString.undefinedMessage));
     } on ApiException catch (e) {
-      return ApiResponse.failure(e.message, statusCode: e.statusCode);
+      return left(NetworkFailure(e.message));
+    } catch (_) {
+      return left(const UnknownFailure());
     }
   }
 

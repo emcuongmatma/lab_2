@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lab_2/common/app_string.dart';
 import 'package:lab_2/common/colors.dart';
 import 'package:lab_2/common/routes.dart';
-import 'package:lab_2/data/repository/auth_repository.dart';
+import 'package:lab_2/domain/usecase/auth_usecase.dart';
 import 'package:lab_2/generated/assets.dart';
 import 'package:lab_2/injection.dart' as di;
 import 'package:lab_2/presentation/page/auth/model/username_input.dart';
@@ -23,7 +23,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   PhoneInput _usernameInput = const PhoneInput.pure();
-  final _repo = di.locator<AuthRepository>();
+  final _authUseCase = di.locator<AuthUseCase>();
   bool _isLoading = false;
 
   Future<void> checkPhoneNumber({
@@ -33,20 +33,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isLoading = true;
     });
-    try {
-      final result = await _repo.isAvailable(_usernameInput.value);
-      if (result.data == true) {
-        onSuccess();
-      } else {
-        showPhoneUsedDialog();
-      }
-    } catch (e) {
-      return;
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    final result = await _authUseCase.checkAvailable(
+      phone: _usernameInput.value,
+    );
+    result.match(
+      (failure) {
+        debugPrint(failure.message);
+      },
+      (isAvailable) => isAvailable ? onSuccess() : showPhoneUsedDialog(),
+    );
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -141,28 +139,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     text1: AppString.alreadyHaveAccount,
                     text2: AppString.signin,
                     onFacebookAction: () {
-                      showNotifyDialog(
-                        context,
-                        AppString.signInWithFbFail,
-                      );
+                      showNotifyDialog(context, AppString.signInWithFbFail);
                     },
                     onGoogleAction: () {
-                      showNotifyDialog(
-                        context,
-                        AppString.signInWithGgFail,
-                      );
+                      showNotifyDialog(context, AppString.signInWithGgFail);
                     },
                     onAppleAction: () {
-                      showNotifyDialog(
-                        context,
-                        AppString.signInWithApFail,
-                      );
+                      showNotifyDialog(context, AppString.signInWithApFail);
                     },
                     onAction: () {
                       if (_usernameInput.value.isNotEmpty) {
                         showNotifyRowOptionDialog(
                           context: context,
-                          message: AppString.warningProfile(_usernameInput.value),
+                          message: AppString.warningProfile(
+                            _usernameInput.value,
+                          ),
                           buttonText1: AppString.cancel,
                           buttonText2: AppString.signin,
                           onAction2: () =>
